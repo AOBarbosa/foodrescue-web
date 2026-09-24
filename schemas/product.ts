@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { CreateProductRequest } from "@/types/product";
+import type { CreateProductRequest, UpdateInventoryRequest } from "@/types/product";
 
 /*
  * Client-side mirror of RegisterProductDTO: name and category required
@@ -45,5 +45,44 @@ export function toCreateProductRequest(values: ProductFormValues): CreateProduct
     category: values.category,
     originalPrice: parsePrice(values.originalPrice)!,
     ...(values.photoUrl ? { photoUrl: values.photoUrl } : {}),
+  };
+}
+
+/*
+ * Client-side mirror of the inventory rules in ProductService.updateInventory:
+ * at least one field, stock not negative. A past expiration date is NOT an
+ * error — the backend saves it and flags it, and so does the UI.
+ */
+export const inventoryUpdateSchema = z
+  .object({
+    stockQuantity: z
+      .string()
+      .trim()
+      .refine((value) => value === "" || /^-?\d+$/.test(value), {
+        message: "Informe um número inteiro.",
+        abort: true,
+      })
+      .refine((value) => value === "" || Number(value) >= 0, {
+        message: "O estoque não pode ser negativo.",
+      }),
+    expirationDate: z.union([z.literal(""), z.iso.date({ error: "Data inválida." })]),
+  })
+  .refine((values) => values.stockQuantity !== "" || values.expirationDate !== "", {
+    message: "Informe o estoque, a validade ou ambos.",
+    path: ["stockQuantity"],
+  });
+
+export type InventoryFormValues = z.infer<typeof inventoryUpdateSchema>;
+
+export const INVENTORY_FORM_FIELDS = [
+  "stockQuantity",
+  "expirationDate",
+] as const satisfies readonly (keyof InventoryFormValues)[];
+
+/** Only the informed fields are sent (partial update). */
+export function toUpdateInventoryRequest(values: InventoryFormValues): UpdateInventoryRequest {
+  return {
+    ...(values.stockQuantity !== "" ? { stockQuantity: Number(values.stockQuantity) } : {}),
+    ...(values.expirationDate !== "" ? { expirationDate: values.expirationDate } : {}),
   };
 }

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as api from "@/lib/api/products";
 import { apiError, product } from "@/test/fixtures";
 import { renderHookWithProviders } from "@/test/render";
-import { productKeys, useCreateProduct, useProduct, useProducts } from "./useProducts";
+import { productKeys, useCreateProduct, useProduct, useProducts, useUpdateInventory } from "./useProducts";
 
 vi.mock("@/lib/api/products");
 
@@ -45,5 +45,19 @@ describe("useCreateProduct", () => {
 
     expect(queryClient.getQueryData(productKeys.detail(product.id))).toEqual(product);
     expect(queryClient.getQueryState(productKeys.list())?.isInvalidated).toBe(true);
+  });
+});
+
+describe("useUpdateInventory", () => {
+  it("keeps the product cached with the saved values, including the past-date flag", async () => {
+    const saved = { ...product, stockQuantity: 0, expirationDate: "2020-01-01" };
+    vi.mocked(api.updateInventory).mockResolvedValue({ product: saved, expirationDateInPast: true });
+
+    const { result, queryClient } = renderHookWithProviders(() => useUpdateInventory(product.id));
+    const response = await act(() => result.current.mutateAsync({ stockQuantity: 0, expirationDate: "2020-01-01" }));
+
+    expect(response.expirationDateInPast).toBe(true);
+    expect(api.updateInventory).toHaveBeenCalledWith(product.id, { stockQuantity: 0, expirationDate: "2020-01-01" });
+    expect(queryClient.getQueryData(productKeys.detail(product.id))).toEqual(saved);
   });
 });
