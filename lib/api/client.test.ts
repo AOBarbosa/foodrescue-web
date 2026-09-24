@@ -1,6 +1,6 @@
 import { AxiosHeaders, type AxiosAdapter } from "axios";
-import { describe, expect, it } from "vitest";
-import { getSession, getToken, setSession } from "@/lib/auth/session";
+import { describe, expect, it, vi } from "vitest";
+import { getSession, getToken, onSessionExpired, setSession } from "@/lib/auth/session";
 import { apiClient } from "./client";
 import { AppError } from "./errors";
 
@@ -23,9 +23,11 @@ function unauthorizedAdapter(seen: { authorization?: string }): AxiosAdapter {
 }
 
 describe("apiClient", () => {
-  it("sends the session token and clears the session when it is rejected", async () => {
+  it("sends the session token and expires the session when it is rejected", async () => {
     setSession("jwt-123", { role: "ESTABLISHMENT", id: 1, name: "Padaria" });
     const seen: { authorization?: string } = {};
+    const expired = vi.fn();
+    const unsubscribe = onSessionExpired(expired);
 
     const request = apiClient.get("/products", { adapter: unauthorizedAdapter(seen) });
 
@@ -33,14 +35,20 @@ describe("apiClient", () => {
     expect(seen.authorization).toBe("Bearer jwt-123");
     expect(getToken()).toBeUndefined();
     expect(getSession()).toBeNull();
+    expect(expired).toHaveBeenCalledOnce();
+    unsubscribe();
   });
 
-  it("does not send a token nor touch the session on anonymous 401s (e.g. wrong password)", async () => {
+  it("does not send a token nor expire the session on anonymous 401s", async () => {
     const seen: { authorization?: string } = {};
+    const expired = vi.fn();
+    const unsubscribe = onSessionExpired(expired);
 
     await expect(
       apiClient.post("/establishments/login", {}, { adapter: unauthorizedAdapter(seen) }),
     ).rejects.toMatchObject({ status: 401, code: "UNAUTHORIZED" });
     expect(seen.authorization).toBeUndefined();
+    expect(expired).not.toHaveBeenCalled();
+    unsubscribe();
   });
 });

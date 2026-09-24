@@ -25,6 +25,7 @@ const COOKIE_OPTIONS: Cookies.CookieAttributes = {
 };
 
 const listeners = new Set<() => void>();
+const expiredListeners = new Set<() => void>();
 
 // useSyncExternalStore needs the same object back while nothing changed.
 let cachedRaw: string | undefined;
@@ -69,6 +70,20 @@ export function clearSession(): void {
   Cookies.remove(TOKEN_COOKIE, { path: "/" });
   Cookies.remove(SESSION_COOKIE, { path: "/" });
   notify();
+}
+
+/**
+ * Ends the session because the backend rejected the token (not because the
+ * user chose to leave), so whoever is showing private content can react.
+ */
+export function expireSession(): void {
+  clearSession();
+  expiredListeners.forEach((listener) => listener());
+}
+
+export function onSessionExpired(listener: () => void): () => void {
+  expiredListeners.add(listener);
+  return () => expiredListeners.delete(listener);
 }
 
 export function subscribeSession(listener: () => void): () => void {
