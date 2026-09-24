@@ -10,7 +10,10 @@ import { ESTABLISHMENT_LOGIN_PATH } from "@/lib/auth/constants";
 import { onSessionExpired } from "@/lib/auth/session";
 import { BrandLink } from "./BrandLink";
 
-const NAV_ITEMS = [{ href: "/dashboard/profile", label: "Perfil" }];
+const NAV_ITEMS = [
+  { href: "/dashboard/products", label: "Produtos" },
+  { href: "/dashboard/profile", label: "Perfil" },
+];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
   const router = useRouter();
