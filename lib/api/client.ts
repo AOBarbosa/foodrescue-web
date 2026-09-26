@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from "axios";
-import { clearSession, getToken } from "@/lib/auth/session";
+import { expireSession, getToken } from "@/lib/auth/session";
 import type { ApiResponse } from "@/types/api";
 import { toAppError } from "./errors";
 
@@ -28,7 +28,7 @@ apiClient.interceptors.response.use(
     const sentToken =
       axios.isAxiosError(error) && Boolean(error.config?.headers?.Authorization);
     if (appError.status === 401 && sentToken) {
-      clearSession();
+      expireSession();
     }
     return Promise.reject(appError);
   },

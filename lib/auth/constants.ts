@@ -6,4 +6,4 @@ export const TOKEN_COOKIE = "fr_token";
 export const SESSION_COOKIE = "fr_session";
 
 export const ESTABLISHMENT_LOGIN_PATH = "/establishment/login";
-export const ESTABLISHMENT_HOME_PATH = "/dashboard/products";
+export const ESTABLISHMENT_HOME_PATH = "/dashboard/profile";
