@@ -2,6 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent, { type UserEvent } from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as api from "@/lib/api/establishments";
+import { ESTABLISHMENT_HOME_PATH } from "@/lib/auth/constants";
 import { getToken } from "@/lib/auth/session";
 import { apiError, establishment } from "@/test/fixtures";
 import { router } from "@/test/navigation";
@@ -35,7 +36,7 @@ describe("RegisterEstablishmentForm", () => {
     expect(screen.getByLabelText(/cnpj/i)).toHaveValue("11.222.333/0001-81");
     await user.click(screen.getByRole("button", { name: /criar conta/i }));
 
-    await waitFor(() => expect(router.replace).toHaveBeenCalledWith("/dashboard/profile"));
+    await waitFor(() => expect(router.replace).toHaveBeenCalledWith(ESTABLISHMENT_HOME_PATH));
     expect(api.registerEstablishment).toHaveBeenCalledWith({
       name: "Padaria Pão Quente",
       cnpj: "11222333000181",
