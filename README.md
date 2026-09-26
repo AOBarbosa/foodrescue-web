@@ -15,25 +15,32 @@ npm install
 npm run dev                  # http://localhost:3000
 ```
 
-| Script | O que faz |
-|---|---|
-| `npm run dev` | servidor de desenvolvimento |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | gera os tipos de rota do Next e roda `tsc --noEmit` |
-| `npm test` | Vitest + React Testing Library |
-| `npm run build` | build de produção |
+| Script                 | O que faz                                           |
+| ---------------------- | --------------------------------------------------- |
+| `npm run dev`          | servidor de desenvolvimento                         |
+| `npm run lint`         | ESLint (inclui Prettier e ordenação de imports)     |
+| `npm run lint:fix`     | corrige o que o ESLint consegue corrigir sozinho    |
+| `npm run format`       | formata o projeto inteiro com Prettier              |
+| `npm run format:check` | verifica a formatação (roda no CI)                  |
+| `npm run typecheck`    | gera os tipos de rota do Next e roda `tsc --noEmit` |
+| `npm test`             | Vitest + React Testing Library                      |
+| `npm run build`        | build de produção                                   |
 
 ## O que existe hoje (Sprint 1)
 
-| UC | Tela | Rota |
-|---|---|---|
-| UC01 | Cadastro e login de estabelecimento | `/establishment/register`, `/establishment/login` |
-| UC01 | Listagem pública de estabelecimentos | `/establishments` |
-| UC01 | Perfil: ver, editar, excluir a própria conta | `/dashboard/profile` |
-| UC02 | Cadastro, listagem e detalhe de produtos | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]` |
-| UC03 | Atualização de estoque e validade | formulário em `/dashboard/products/[id]` |
+| UC   | Tela                                         | Rota                                                                         |
+| ---- | -------------------------------------------- | ---------------------------------------------------------------------------- |
+| UC01 | Cadastro e login de estabelecimento          | `/establishment/register`, `/establishment/login`                            |
+| UC01 | Listagem pública de estabelecimentos         | `/establishments`                                                            |
+| UC01 | Perfil: ver, editar, excluir a própria conta | `/dashboard/profile`                                                         |
+| UC02 | Cadastro, listagem e detalhe de produtos     | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]` |
+| UC03 | Atualização de estoque e validade            | formulário em `/dashboard/products/[id]`                                     |
 
 UC04 em diante só ganham tela quando a API correspondente existir no backend.
+
+No VS Code, `.vscode/settings.json` formata com Prettier e aplica os fixes do
+ESLint (ordenação de imports) ao salvar. Instale as extensões recomendadas
+(Prettier e ESLint).
 
 ## Stack
 
