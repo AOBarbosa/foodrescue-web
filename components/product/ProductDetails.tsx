@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { QueryStateView } from "@/components/ui/QueryStateView";
 import { useProduct } from "@/hooks/useProducts";
 import { AppError } from "@/lib/api/errors";
+import { InventoryUpdateForm } from "./InventoryUpdateForm";
 import { ProductSummaryCard } from "./ProductSummaryCard";
 
 type ProductDetailsProps = {
@@ -41,13 +42,14 @@ export function ProductDetails({ productId, created = false }: ProductDetailsPro
       <PageHeader title={product?.name ?? "Produto"} actions={backButton} />
       <QueryStateView isPending={isPending} error={error} onRetry={() => void refetch()}>
         {product && (
-          <Box sx={{ display: "grid", gap: 3 }}>
+          <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", md: "3fr 2fr" }, alignItems: "start" }}>
             {created && (
-              <Alert severity="success">
+              <Alert severity="success" sx={{ gridColumn: "1 / -1" }}>
                 Produto cadastrado. Informe agora o estoque e a validade para acompanhá-lo.
               </Alert>
             )}
             <ProductSummaryCard product={product} />
+            <InventoryUpdateForm key={product.id} product={product} />
           </Box>
         )}
       </QueryStateView>

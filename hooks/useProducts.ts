@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createProduct, getProduct, listProducts } from "@/lib/api/products";
-import type { CreateProductRequest } from "@/types/product";
+import { createProduct, getProduct, listProducts, updateInventory } from "@/lib/api/products";
+import type { CreateProductRequest, UpdateInventoryRequest } from "@/types/product";
 
 export const productKeys = {
   all: ["products"] as const,
@@ -21,6 +21,17 @@ export function useCreateProduct() {
   return useMutation({
     mutationFn: (request: CreateProductRequest) => createProduct(request),
     onSuccess: (product) => {
+      queryClient.setQueryData(productKeys.detail(product.id), product);
+      void queryClient.invalidateQueries({ queryKey: productKeys.list() });
+    },
+  });
+}
+
+export function useUpdateInventory(id: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (request: UpdateInventoryRequest) => updateInventory(id, request),
+    onSuccess: ({ product }) => {
       queryClient.setQueryData(productKeys.detail(product.id), product);
       void queryClient.invalidateQueries({ queryKey: productKeys.list() });
     },
