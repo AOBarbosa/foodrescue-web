@@ -1,18 +1,23 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { Alert, Card, CardContent, Typography } from "@mui/material";
-import { LoginForm } from "@/components/establishment/LoginForm";
-import { ESTABLISHMENT_HOME_PATH } from "@/lib/auth/constants";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { Alert, Card, CardContent, Typography } from '@mui/material'
 
-export const metadata: Metadata = { title: "Entrar" };
+import { LoginForm } from '@/components/establishment/LoginForm'
+import { ESTABLISHMENT_HOME_PATH } from '@/lib/auth/constants'
+
+export const metadata: Metadata = { title: 'Entrar' }
 
 /** Only dashboard paths are accepted as `?next=`, so the login can't redirect off-site. */
 function safeRedirect(next: string | string[] | undefined): string {
-  return typeof next === "string" && next.startsWith("/dashboard") ? next : ESTABLISHMENT_HOME_PATH;
+  return typeof next === 'string' && next.startsWith('/dashboard')
+    ? next
+    : ESTABLISHMENT_HOME_PATH
 }
 
-export default async function LoginPage({ searchParams }: PageProps<"/establishment/login">) {
-  const { next, expired } = await searchParams;
+export default async function LoginPage({
+  searchParams,
+}: PageProps<'/establishment/login'>) {
+  const { next, expired } = await searchParams
 
   return (
     <Card>
@@ -29,10 +34,13 @@ export default async function LoginPage({ searchParams }: PageProps<"/establishm
           </Alert>
         )}
         <LoginForm redirectTo={safeRedirect(next)} />
-        <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
-          Ainda não tem conta? <Link href="/establishment/register">Cadastre seu estabelecimento</Link>
+        <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+          Ainda não tem conta?{' '}
+          <Link href="/establishment/register">
+            Cadastre seu estabelecimento
+          </Link>
         </Typography>
       </CardContent>
     </Card>
-  );
+  )
 }

@@ -1,6 +1,7 @@
-import { redirect } from "next/navigation";
-import { ESTABLISHMENT_HOME_PATH } from "@/lib/auth/constants";
+import { redirect } from 'next/navigation'
+
+import { ESTABLISHMENT_HOME_PATH } from '@/lib/auth/constants'
 
 export default function DashboardPage() {
-  redirect(ESTABLISHMENT_HOME_PATH);
+  redirect(ESTABLISHMENT_HOME_PATH)
 }

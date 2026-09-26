@@ -1,7 +1,8 @@
-import { Container } from "@mui/material";
-import { PublicHeader } from "@/components/layout/PublicHeader";
+import { Container } from '@mui/material'
 
-export default function PublicLayout({ children }: LayoutProps<"/">) {
+import { PublicHeader } from '@/components/layout/PublicHeader'
+
+export default function PublicLayout({ children }: LayoutProps<'/'>) {
   return (
     <>
       <PublicHeader />
@@ -9,5 +10,5 @@ export default function PublicLayout({ children }: LayoutProps<"/">) {
         {children}
       </Container>
     </>
-  );
+  )
 }

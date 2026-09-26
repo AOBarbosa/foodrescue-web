@@ -1,18 +1,25 @@
-import type { ReactNode } from "react";
-import { Paper, Stack, Typography } from "@mui/material";
+import { Paper, Stack, Typography } from '@mui/material'
+import type { ReactNode } from 'react'
 
 type EmptyStateProps = {
-  icon?: ReactNode;
-  title: string;
-  description?: ReactNode;
-  action?: ReactNode;
-};
+  icon?: ReactNode
+  title: string
+  description?: ReactNode
+  action?: ReactNode
+}
 
-export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
+export function EmptyState({
+  icon,
+  title,
+  description,
+  action,
+}: EmptyStateProps) {
   return (
-    <Paper variant="outlined" sx={{ py: 6, px: 3, borderStyle: "dashed" }}>
-      <Stack spacing={1.5} sx={{ alignItems: "center", textAlign: "center" }}>
-        {icon && <Stack sx={{ color: "text.disabled", fontSize: 48 }}>{icon}</Stack>}
+    <Paper variant="outlined" sx={{ py: 6, px: 3, borderStyle: 'dashed' }}>
+      <Stack spacing={1.5} sx={{ alignItems: 'center', textAlign: 'center' }}>
+        {icon && (
+          <Stack sx={{ color: 'text.disabled', fontSize: 48 }}>{icon}</Stack>
+        )}
         <Typography variant="h6" component="p">
           {title}
         </Typography>
@@ -24,5 +31,5 @@ export function EmptyState({ icon, title, description, action }: EmptyStateProps
         {action && <Stack sx={{ pt: 1 }}>{action}</Stack>}
       </Stack>
     </Paper>
-  );
+  )
 }
