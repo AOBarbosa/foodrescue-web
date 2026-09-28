@@ -1,18 +1,20 @@
-"use client";
+'use client'
 
-import { Box, MenuItem, TextField } from "@mui/material";
-import { Controller, type Control } from "react-hook-form";
-import { PasswordField } from "@/components/ui/PasswordField";
-import { formatCnpj } from "@/lib/validation/cnpj";
-import type { EstablishmentFormValues } from "@/schemas/establishment";
-import { ESTABLISHMENT_CATEGORIES } from "@/types/establishment";
-import { ESTABLISHMENT_CATEGORY_LABELS } from "./categoryLabels";
+import { Box, MenuItem, TextField } from '@mui/material'
+import { type Control, Controller } from 'react-hook-form'
+
+import { PasswordField } from '@/components/ui/PasswordField'
+import { formatCnpj } from '@/lib/validation/cnpj'
+import type { EstablishmentFormValues } from '@/schemas/establishment'
+import { ESTABLISHMENT_CATEGORIES } from '@/types/establishment'
+
+import { ESTABLISHMENT_CATEGORY_LABELS } from './categoryLabels'
 
 type EstablishmentFormFieldsProps = {
-  control: Control<EstablishmentFormValues>;
-  passwordLabel: string;
-  passwordHelperText?: string;
-};
+  control: Control<EstablishmentFormValues>
+  passwordLabel: string
+  passwordHelperText?: string
+}
 
 /** Fields shared by the register and edit-profile forms. */
 export function EstablishmentFormFields({
@@ -21,7 +23,13 @@ export function EstablishmentFormFields({
   passwordHelperText,
 }: EstablishmentFormFieldsProps) {
   return (
-    <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" } }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gap: 2,
+        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+      }}
+    >
       <Controller
         name="name"
         control={control}
@@ -32,7 +40,7 @@ export function EstablishmentFormFields({
             required
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            sx={{ gridColumn: { sm: "1 / -1" } }}
+            sx={{ gridColumn: { sm: '1 / -1' } }}
           />
         )}
       />
@@ -48,7 +56,7 @@ export function EstablishmentFormFields({
             placeholder="00.000.000/0000-00"
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            slotProps={{ htmlInput: { inputMode: "numeric" } }}
+            slotProps={{ htmlInput: { inputMode: 'numeric' } }}
           />
         )}
       />
@@ -83,7 +91,7 @@ export function EstablishmentFormFields({
             autoComplete="street-address"
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            sx={{ gridColumn: { sm: "1 / -1" } }}
+            sx={{ gridColumn: { sm: '1 / -1' } }}
           />
         )}
       />
@@ -116,5 +124,5 @@ export function EstablishmentFormFields({
         )}
       />
     </Box>
-  );
+  )
 }

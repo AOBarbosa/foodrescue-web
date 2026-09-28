@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
-import { EstablishmentList } from "@/components/establishment/EstablishmentList";
-import { PageHeader } from "@/components/ui/PageHeader";
+import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: "Estabelecimentos" };
+import { EstablishmentList } from '@/components/establishment/EstablishmentList'
+import { PageHeader } from '@/components/ui/PageHeader'
+
+export const metadata: Metadata = { title: 'Estabelecimentos' }
 
 export default function EstablishmentsPage() {
   return (
@@ -13,5 +14,5 @@ export default function EstablishmentsPage() {
       />
       <EstablishmentList />
     </>
-  );
+  )
 }

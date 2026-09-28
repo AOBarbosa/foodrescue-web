@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { vi } from 'vitest'
 
 /** Spies behind the `next/navigation` mock; reset them in `beforeEach`. */
 export const router = {
@@ -8,10 +8,10 @@ export const router = {
   refresh: vi.fn(),
   prefetch: vi.fn(),
   forward: vi.fn(),
-};
+}
 
 export const navigationMock = {
   useRouter: () => router,
-  usePathname: () => "/",
+  usePathname: () => '/',
   useSearchParams: () => new URLSearchParams(),
-};
+}

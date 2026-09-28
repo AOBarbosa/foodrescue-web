@@ -1,10 +1,11 @@
-import { QueryClient } from "@tanstack/react-query";
-import { AppError } from "@/lib/api/errors";
+import { QueryClient } from '@tanstack/react-query'
+
+import { AppError } from '@/lib/api/errors'
 
 /** Errors that retrying cannot fix: the request itself is wrong or not allowed. */
 function isRetryable(error: unknown): boolean {
-  if (!(error instanceof AppError)) return true;
-  return error.status === 0 || error.status >= 500;
+  if (!(error instanceof AppError)) return true
+  return error.status === 0 || error.status >= 500
 }
 
 export function createQueryClient(): QueryClient {
@@ -17,5 +18,5 @@ export function createQueryClient(): QueryClient {
       },
       mutations: { retry: false },
     },
-  });
+  })
 }

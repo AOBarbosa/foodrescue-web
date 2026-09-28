@@ -1,6 +1,7 @@
-import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
-import { describeError, describeSubError } from "@/lib/api/errorMessages";
-import { AppError } from "@/lib/api/errors";
+import type { FieldValues, Path, UseFormSetError } from 'react-hook-form'
+
+import { describeError, describeSubError } from '@/lib/api/errorMessages'
+import { AppError } from '@/lib/api/errors'
 
 /**
  * Maps a failed request back onto the form: each backend sub-error whose
@@ -11,25 +12,29 @@ import { AppError } from "@/lib/api/errors";
 export function applyServerErrors<T extends FieldValues>(
   error: unknown,
   setError: UseFormSetError<T>,
-  fields: readonly Path<T>[],
+  fields: readonly Path<T>[]
 ): string | null {
   if (!(error instanceof AppError) || error.subErrors.length === 0) {
-    return describeError(error);
+    return describeError(error)
   }
 
-  let unmapped = false;
-  let focused = false;
+  let unmapped = false
+  let focused = false
   for (const subError of error.subErrors) {
-    const field = fields.find((name) => name === subError.field);
+    const field = fields.find((name) => name === subError.field)
     if (!field) {
-      unmapped = true;
-      continue;
+      unmapped = true
+      continue
     }
-    setError(field, { type: "server", message: describeSubError(subError) }, {
-      shouldFocus: !focused,
-    });
-    focused = true;
+    setError(
+      field,
+      { type: 'server', message: describeSubError(subError) },
+      {
+        shouldFocus: !focused,
+      }
+    )
+    focused = true
   }
 
-  return unmapped ? describeError(error) : null;
+  return unmapped ? describeError(error) : null
 }

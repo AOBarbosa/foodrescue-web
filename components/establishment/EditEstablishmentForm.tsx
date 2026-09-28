@@ -1,30 +1,36 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Alert, Button, Card, CardContent, Stack } from "@mui/material";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useUpdateEstablishment } from "@/hooks/useEstablishments";
-import { applyServerErrors } from "@/lib/forms/applyServerErrors";
-import { formatCnpj } from "@/lib/validation/cnpj";
+import { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Alert, Button, Card, CardContent, Stack } from '@mui/material'
+import { useForm } from 'react-hook-form'
+
+import { useUpdateEstablishment } from '@/hooks/useEstablishments'
+import { applyServerErrors } from '@/lib/forms/applyServerErrors'
+import { formatCnpj } from '@/lib/validation/cnpj'
 import {
   ESTABLISHMENT_FORM_FIELDS,
+  type EstablishmentFormValues,
   toUpdateEstablishmentRequest,
   updateEstablishmentSchema,
-  type EstablishmentFormValues,
-} from "@/schemas/establishment";
-import type { EstablishmentDTO } from "@/types/establishment";
-import { EstablishmentFormFields } from "./EstablishmentFormFields";
+} from '@/schemas/establishment'
+import type { EstablishmentDTO } from '@/types/establishment'
+
+import { EstablishmentFormFields } from './EstablishmentFormFields'
 
 type EditEstablishmentFormProps = {
-  establishment: EstablishmentDTO;
-  onCancel: () => void;
-  onSaved: () => void;
-};
+  establishment: EstablishmentDTO
+  onCancel: () => void
+  onSaved: () => void
+}
 
-export function EditEstablishmentForm({ establishment, onCancel, onSaved }: EditEstablishmentFormProps) {
-  const updateEstablishment = useUpdateEstablishment();
-  const [formError, setFormError] = useState<string | null>(null);
+export function EditEstablishmentForm({
+  establishment,
+  onCancel,
+  onSaved,
+}: EditEstablishmentFormProps) {
+  const updateEstablishment = useUpdateEstablishment()
+  const [formError, setFormError] = useState<string | null>(null)
   const { control, handleSubmit, setError } = useForm<EstablishmentFormValues>({
     resolver: zodResolver(updateEstablishmentSchema),
     defaultValues: {
@@ -33,22 +39,24 @@ export function EditEstablishmentForm({ establishment, onCancel, onSaved }: Edit
       address: establishment.address,
       category: establishment.category,
       email: establishment.email,
-      password: "",
+      password: '',
     },
-  });
+  })
 
   const onSubmit = handleSubmit(async (values) => {
-    setFormError(null);
+    setFormError(null)
     try {
       await updateEstablishment.mutateAsync({
         id: establishment.id,
         request: toUpdateEstablishmentRequest(values),
-      });
-      onSaved();
+      })
+      onSaved()
     } catch (error) {
-      setFormError(applyServerErrors(error, setError, ESTABLISHMENT_FORM_FIELDS));
+      setFormError(
+        applyServerErrors(error, setError, ESTABLISHMENT_FORM_FIELDS)
+      )
     }
-  });
+  })
 
   return (
     <Card>
@@ -60,16 +68,24 @@ export function EditEstablishmentForm({ establishment, onCancel, onSaved }: Edit
             passwordHelperText="Deixe em branco para manter a senha atual."
           />
           {formError && <Alert severity="error">{formError}</Alert>}
-          <Stack direction="row" spacing={1} sx={{ justifyContent: "flex-end" }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ justifyContent: 'flex-end' }}
+          >
             <Button onClick={onCancel} disabled={updateEstablishment.isPending}>
               Cancelar
             </Button>
-            <Button type="submit" variant="contained" loading={updateEstablishment.isPending}>
+            <Button
+              type="submit"
+              variant="contained"
+              loading={updateEstablishment.isPending}
+            >
               Salvar alterações
             </Button>
           </Stack>
         </Stack>
       </CardContent>
     </Card>
-  );
+  )
 }

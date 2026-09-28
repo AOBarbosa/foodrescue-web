@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation'
 import {
   Alert,
   Button,
@@ -9,44 +9,54 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@mui/material";
-import { useDeleteEstablishment } from "@/hooks/useEstablishments";
-import { describeError } from "@/lib/api/errorMessages";
+} from '@mui/material'
+
+import { useDeleteEstablishment } from '@/hooks/useEstablishments'
+import { describeError } from '@/lib/api/errorMessages'
 
 type DeleteEstablishmentDialogProps = {
-  open: boolean;
-  establishmentId: number;
-  onClose: () => void;
-};
+  open: boolean
+  establishmentId: number
+  onClose: () => void
+}
 
-export function DeleteEstablishmentDialog({ open, establishmentId, onClose }: DeleteEstablishmentDialogProps) {
-  const router = useRouter();
-  const deleteEstablishment = useDeleteEstablishment();
+export function DeleteEstablishmentDialog({
+  open,
+  establishmentId,
+  onClose,
+}: DeleteEstablishmentDialogProps) {
+  const router = useRouter()
+  const deleteEstablishment = useDeleteEstablishment()
 
   const handleClose = () => {
-    if (deleteEstablishment.isPending) return;
-    deleteEstablishment.reset();
-    onClose();
-  };
+    if (deleteEstablishment.isPending) return
+    deleteEstablishment.reset()
+    onClose()
+  }
 
   const handleConfirm = async () => {
     // Awaited instead of a per-call onSuccess: clearing the session unmounts
     // this dialog, and per-call callbacks don't fire on unmounted components.
     try {
-      await deleteEstablishment.mutateAsync(establishmentId);
+      await deleteEstablishment.mutateAsync(establishmentId)
     } catch {
-      return; // shown through deleteEstablishment.error
+      return // shown through deleteEstablishment.error
     }
-    router.replace("/");
-  };
+    router.replace('/')
+  }
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="delete-establishment-title">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="delete-establishment-title"
+    >
       <DialogTitle id="delete-establishment-title">Excluir conta?</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Seu estabelecimento deixará de aparecer na plataforma e você não poderá mais entrar com
-          esta conta. Esta ação não pode ser desfeita por aqui.
+          Seu estabelecimento deixará de aparecer na plataforma e você não
+          poderá mais entrar com esta conta. Esta ação não pode ser desfeita por
+          aqui.
         </DialogContentText>
         {deleteEstablishment.isError && (
           <Alert severity="error" sx={{ mt: 2 }}>
@@ -68,5 +78,5 @@ export function DeleteEstablishmentDialog({ open, establishmentId, onClose }: De
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }

@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import { Card, CardContent } from "@mui/material";
-import { ProductForm } from "@/components/product/ProductForm";
-import { PageHeader } from "@/components/ui/PageHeader";
+import type { Metadata } from 'next'
+import { Card, CardContent } from '@mui/material'
 
-export const metadata: Metadata = { title: "Novo produto" };
+import { ProductForm } from '@/components/product/ProductForm'
+import { PageHeader } from '@/components/ui/PageHeader'
+
+export const metadata: Metadata = { title: 'Novo produto' }
 
 export default function NewProductPage() {
   return (
@@ -18,5 +19,5 @@ export default function NewProductPage() {
         </CardContent>
       </Card>
     </>
-  );
+  )
 }

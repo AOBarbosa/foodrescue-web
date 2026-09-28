@@ -8,5 +8,5 @@
  * (see `enableCssLayer` in app/layout.tsx).
  */
 @layer theme, base, mui, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
