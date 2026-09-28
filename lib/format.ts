@@ -39,3 +39,10 @@ export function formatDate(iso: string): string {
 export function formatDateTime(iso: string): string {
   return dateTime.format(new Date(iso))
 }
+
+const time = new Intl.DateTimeFormat('pt-BR', { timeStyle: 'short' })
+
+/** Time part (HH:mm) of a backend `LocalDateTime`, read as local time. */
+export function formatTime(iso: string): string {
+  return time.format(new Date(iso))
+}

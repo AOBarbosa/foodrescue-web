@@ -3,6 +3,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Alert, Box } from '@mui/material'
 
+import { DemandForecastCard } from '@/components/forecast/DemandForecastCard'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { QueryStateView } from '@/components/ui/QueryStateView'
@@ -67,6 +68,9 @@ export function ProductDetails({
             )}
             <ProductSummaryCard product={product} />
             <InventoryUpdateForm key={product.id} product={product} />
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <DemandForecastCard productId={product.id} />
+            </Box>
           </Box>
         )}
       </QueryStateView>

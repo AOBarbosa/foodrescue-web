@@ -35,8 +35,9 @@ npm run dev                  # http://localhost:3000
 | UC01 | Perfil: ver, editar, excluir a própria conta | `/dashboard/profile`                                                         |
 | UC02 | Cadastro, listagem e detalhe de produtos     | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]` |
 | UC03 | Atualização de estoque e validade            | formulário em `/dashboard/products/[id]`                                     |
+| UC05 | Previsão de demanda (estatística ou IA)      | card em `/dashboard/products/[id]`                                           |
 
-UC04 em diante só ganham tela quando a API correspondente existir no backend.
+As demais UCs só ganham tela quando a API correspondente existir no backend. O UC05 já tem tela, mas só gera previsões quando houver vendas registradas, o que depende do UC04.
 
 No VS Code, `.vscode/settings.json` formata com Prettier e aplica os fixes do
 ESLint (ordenação de imports) ao salvar. Instale as extensões recomendadas
