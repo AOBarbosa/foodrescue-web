@@ -2,6 +2,7 @@ import { AppError, type AppErrorCode } from "@/lib/api/errors";
 import type { ApiSubError } from "@/types/api";
 import type { EstablishmentDTO } from "@/types/establishment";
 import type { ProductDTO } from "@/types/product";
+import type { SaleDTO } from "@/types/sale";
 
 export const establishment: EstablishmentDTO = {
   id: 1,
@@ -24,6 +25,16 @@ export const product: ProductDTO = {
   expirationDate: "2026-10-01",
   establishmentId: 1,
   modificationDate: "2026-09-20T10:00:00",
+};
+
+export const sale: SaleDTO = {
+  id: 100,
+  productId: product.id,
+  quantity: 3,
+  unitPrice: 9.9,
+  totalPrice: 29.7,
+  soldAt: "2026-09-23T10:30:00",
+  creationDate: "2026-09-23T10:30:02",
 };
 
 export function apiError(
