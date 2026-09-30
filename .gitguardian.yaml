@@ -1,0 +1,14 @@
+# ggshield (GitGuardian CLI) configuration.
+#
+# Tests only use mocked data (fixtures such as the password "new-pass"), so
+# they are not scanned for secrets.
+#
+# The GitGuardian GitHub app (the PR check) does not read this file: the same
+# paths must be excluded in the dashboard, under Settings > Secrets detection.
+version: 2
+
+secret:
+  ignored_paths:
+    - '**/*.test.ts'
+    - '**/*.test.tsx'
+    - 'test/**'
