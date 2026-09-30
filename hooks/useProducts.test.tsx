@@ -1,6 +1,7 @@
 import { act, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import * as api from '@/lib/api/products'
 import { apiError, product } from '@/test/fixtures'
 import { renderHookWithProviders } from '@/test/render'
@@ -81,6 +82,7 @@ describe('useUpdateInventory', () => {
     const { result, queryClient } = renderHookWithProviders(() =>
       useUpdateInventory(product.id)
     )
+    queryClient.setQueryData(wasteRiskKeys.product(product.id), null)
     const response = await act(() =>
       result.current.mutateAsync({
         stockQuantity: 0,
@@ -96,5 +98,9 @@ describe('useUpdateInventory', () => {
     expect(queryClient.getQueryData(productKeys.detail(product.id))).toEqual(
       saved
     )
+    expect(
+      queryClient.getQueryState(wasteRiskKeys.product(product.id))
+        ?.isInvalidated
+    ).toBe(true)
   })
 })

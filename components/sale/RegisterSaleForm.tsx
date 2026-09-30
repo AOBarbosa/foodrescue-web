@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Alert,
+  Box,
   Button,
   Card,
   CardContent,
@@ -85,66 +86,77 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
           o preço atual do produto e o momento do registro.
         </Typography>
         <Stack component="form" noValidate onSubmit={onSubmit} spacing={2}>
-          <Controller
-            name="quantity"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="number"
-                label="Quantidade vendida"
-                disabled={outOfStock}
-                error={!!fieldState.error}
-                helperText={
-                  fieldState.error?.message ??
-                  `${product.stockQuantity} ${product.stockQuantity === 1 ? 'unidade' : 'unidades'} em estoque`
-                }
-                slotProps={{
-                  htmlInput: { min: 1, step: 1, inputMode: 'numeric' },
-                }}
-              />
-            )}
-          />
-          <Controller
-            name="unitPrice"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                label="Preço unitário praticado"
-                placeholder={product.currentPrice.toFixed(2).replace('.', ',')}
-                disabled={outOfStock}
-                error={!!fieldState.error}
-                helperText={
-                  fieldState.error?.message ??
-                  `Em branco: ${formatCurrency(product.currentPrice)} (preço atual)`
-                }
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                      <InputAdornment position="start">R$</InputAdornment>
-                    ),
-                  },
-                  htmlInput: { inputMode: 'decimal' },
-                }}
-              />
-            )}
-          />
-          <Controller
-            name="soldAt"
-            control={control}
-            render={({ field, fieldState }) => (
-              <TextField
-                {...field}
-                type="datetime-local"
-                label="Data e hora da venda"
-                disabled={outOfStock}
-                error={!!fieldState.error}
-                helperText={fieldState.error?.message ?? 'Em branco: agora'}
-                slotProps={{ inputLabel: { shrink: true } }}
-              />
-            )}
-          />
+          <Box
+            sx={{
+              display: 'grid',
+              gap: 2,
+              gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
+              alignItems: 'start',
+            }}
+          >
+            <Controller
+              name="quantity"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="number"
+                  label="Quantidade vendida"
+                  disabled={outOfStock}
+                  error={!!fieldState.error}
+                  helperText={
+                    fieldState.error?.message ??
+                    `${product.stockQuantity} ${product.stockQuantity === 1 ? 'unidade' : 'unidades'} em estoque`
+                  }
+                  slotProps={{
+                    htmlInput: { min: 1, step: 1, inputMode: 'numeric' },
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="unitPrice"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  label="Preço unitário praticado"
+                  placeholder={product.currentPrice
+                    .toFixed(2)
+                    .replace('.', ',')}
+                  disabled={outOfStock}
+                  error={!!fieldState.error}
+                  helperText={
+                    fieldState.error?.message ??
+                    `Em branco: ${formatCurrency(product.currentPrice)} (preço atual)`
+                  }
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">R$</InputAdornment>
+                      ),
+                    },
+                    htmlInput: { inputMode: 'decimal' },
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="soldAt"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="datetime-local"
+                  label="Data e hora da venda"
+                  disabled={outOfStock}
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message ?? 'Em branco: agora'}
+                  slotProps={{ inputLabel: { shrink: true } }}
+                />
+              )}
+            />
+          </Box>
           {outOfStock && (
             <Alert severity="info">
               Este produto está sem estoque. Atualize o estoque para registrar
@@ -162,6 +174,7 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
             variant="contained"
             loading={registerSale.isPending}
             disabled={outOfStock}
+            sx={{ alignSelf: { sm: 'flex-end' } }}
           >
             Registrar venda
           </Button>

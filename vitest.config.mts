@@ -12,5 +12,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./test/setup.ts'],
     css: false,
+    // Form tests type through MUI inputs with userEvent, which is slow on a
+    // loaded machine or CI runner; the 5s default made them flaky.
+    testTimeout: 15_000,
   },
 })

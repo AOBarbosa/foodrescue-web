@@ -49,3 +49,20 @@ export function formatDate(iso: string): string {
 export function formatDateTime(iso: string): string {
   return dateTime.format(new Date(iso))
 }
+
+const time = new Intl.DateTimeFormat('pt-BR', { timeStyle: 'short' })
+
+/** Time part (HH:mm) of a backend `LocalDateTime`, read as local time. */
+export function formatTime(iso: string): string {
+  return time.format(new Date(iso))
+}
+
+const percent = new Intl.NumberFormat('pt-BR', {
+  style: 'percent',
+  maximumFractionDigits: 1,
+})
+
+/** A backend percentage (0–100, not 0–1), e.g. `66.67` → `66,7%`. */
+export function formatPercent(value: number): string {
+  return percent.format(value / 100)
+}

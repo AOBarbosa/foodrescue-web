@@ -12,6 +12,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TextField,
   Typography,
@@ -27,6 +28,8 @@ import {
   toSalePeriod,
 } from '@/lib/sale/period'
 import type { SaleDTO, SalePeriod } from '@/types/sale'
+
+const ROWS_PER_PAGE = 10
 
 /** Mirrors the backend's `startDate must not be after endDate` (422). */
 function describeRangeError({ from, to }: PeriodRange): string | null {
@@ -49,10 +52,21 @@ export function SaleHistory({ productId }: { productId: number }) {
   const rangeError = describeRangeError(range)
   const { data, isPending, error, refetch } = useSaleHistory(productId, period)
   const sales = useMemo(() => data ?? [], [data])
+  const [page, setPage] = useState(0)
+  // Clamped: the list may shrink under the current page when it is refetched.
+  const lastPage = Math.max(0, Math.ceil(sales.length / ROWS_PER_PAGE) - 1)
+  const currentPage = Math.min(page, lastPage)
+  const pageSales = sales.slice(
+    currentPage * ROWS_PER_PAGE,
+    (currentPage + 1) * ROWS_PER_PAGE
+  )
 
   const updateRange = (next: PeriodRange) => {
     setRange(next)
-    if (!describeRangeError(next)) setPeriod(toSalePeriod(next))
+    if (!describeRangeError(next)) {
+      setPeriod(toSalePeriod(next))
+      setPage(0)
+    }
   }
 
   return (
@@ -118,7 +132,7 @@ export function SaleHistory({ productId }: { productId: number }) {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {sales.map((sale) => (
+                    {pageSales.map((sale) => (
                       <TableRow
                         key={sale.id}
                         sx={{ '&:last-child td': { border: 0 } }}
@@ -136,6 +150,16 @@ export function SaleHistory({ productId }: { productId: number }) {
                   </TableBody>
                 </Table>
               </TableContainer>
+              {sales.length > ROWS_PER_PAGE && (
+                <TablePagination
+                  component="div"
+                  count={sales.length}
+                  page={currentPage}
+                  onPageChange={(_, next) => setPage(next)}
+                  rowsPerPage={ROWS_PER_PAGE}
+                  rowsPerPageOptions={[]}
+                />
+              )}
               <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
                 {summarize(sales)}
               </Typography>

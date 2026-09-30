@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import {
   createProduct,
   getProduct,
@@ -39,6 +40,7 @@ export function useCreateProduct() {
   })
 }
 
+/** The new stock changes the product's waste risk too. */
 export function useUpdateInventory(id: number) {
   const queryClient = useQueryClient()
   return useMutation({
@@ -47,6 +49,7 @@ export function useUpdateInventory(id: number) {
     onSuccess: ({ product }) => {
       queryClient.setQueryData(productKeys.detail(product.id), product)
       void queryClient.invalidateQueries({ queryKey: productKeys.list() })
+      void queryClient.invalidateQueries({ queryKey: wasteRiskKeys.all })
     },
   })
 }

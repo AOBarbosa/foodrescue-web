@@ -3,11 +3,13 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Alert, Box } from '@mui/material'
 
+import { DemandForecastCard } from '@/components/forecast/DemandForecastCard'
 import { RegisterSaleForm } from '@/components/sale/RegisterSaleForm'
 import { SaleHistory } from '@/components/sale/SaleHistory'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { QueryStateView } from '@/components/ui/QueryStateView'
+import { WasteRiskCard } from '@/components/wasteRisk/WasteRiskCard'
 import { useProduct } from '@/hooks/useProducts'
 import { AppError } from '@/lib/api/errors'
 
@@ -58,7 +60,6 @@ export function ProductDetails({
               display: 'grid',
               gap: 3,
               gridTemplateColumns: { xs: '1fr', md: '3fr 2fr' },
-              alignItems: 'start',
             }}
           >
             {created && (
@@ -69,9 +70,17 @@ export function ProductDetails({
             )}
             <ProductSummaryCard product={product} />
             <InventoryUpdateForm key={product.id} product={product} />
-            <RegisterSaleForm product={product} />
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <RegisterSaleForm product={product} />
+            </Box>
             <Box sx={{ gridColumn: '1 / -1' }}>
               <SaleHistory productId={product.id} />
+            </Box>
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <DemandForecastCard productId={product.id} />
+            </Box>
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <WasteRiskCard productId={product.id} />
             </Box>
           </Box>
         )}
