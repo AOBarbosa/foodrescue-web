@@ -35,8 +35,9 @@ npm run dev                  # http://localhost:3000
 | UC01 | Perfil: ver, editar, excluir a própria conta | `/dashboard/profile`                                                         |
 | UC02 | Cadastro, listagem e detalhe de produtos     | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]` |
 | UC03 | Atualização de estoque e validade            | formulário em `/dashboard/products/[id]`                                     |
+| UC04 | Registro de venda e histórico por período    | formulário e histórico em `/dashboard/products/[id]`                         |
 
-UC04 em diante só ganham tela quando a API correspondente existir no backend.
+UC05 em diante só ganham tela quando a API correspondente existir no backend.
 
 No VS Code, `.vscode/settings.json` formata com Prettier e aplica os fixes do
 ESLint (ordenação de imports) ao salvar. Instale as extensões recomendadas
@@ -60,6 +61,7 @@ components/
   layout/              cabeçalhos e shell do painel
   establishment/       um componente por caso de uso (formulários, perfil, lista)
   product/
+  sale/
 hooks/                 um hook TanStack Query por operação
 lib/
   api/client.ts        a única instância do Axios

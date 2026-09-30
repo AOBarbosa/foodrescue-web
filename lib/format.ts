@@ -31,6 +31,16 @@ export function toIsoDate(value: Date): string {
   return `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`
 }
 
+/**
+ * Local `yyyy-MM-ddTHH:mm:ss`, the format the backend expects for a
+ * `LocalDateTime` — no timezone, so it is never shifted.
+ */
+export function toIsoDateTime(value: Date): string {
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const time = `${pad(value.getHours())}:${pad(value.getMinutes())}:${pad(value.getSeconds())}`
+  return `${toIsoDate(value)}T${time}`
+}
+
 export function formatDate(iso: string): string {
   return date.format(parseIsoDate(iso))
 }

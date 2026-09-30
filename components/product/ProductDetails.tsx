@@ -3,6 +3,8 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Alert, Box } from '@mui/material'
 
+import { RegisterSaleForm } from '@/components/sale/RegisterSaleForm'
+import { SaleHistory } from '@/components/sale/SaleHistory'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { QueryStateView } from '@/components/ui/QueryStateView'
@@ -67,6 +69,10 @@ export function ProductDetails({
             )}
             <ProductSummaryCard product={product} />
             <InventoryUpdateForm key={product.id} product={product} />
+            <RegisterSaleForm product={product} />
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <SaleHistory productId={product.id} />
+            </Box>
           </Box>
         )}
       </QueryStateView>
