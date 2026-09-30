@@ -54,6 +54,32 @@ describe('SaleHistory', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows 10 sales per page, with the totals of the whole period', async () => {
+    vi.mocked(api.listSales).mockResolvedValue(
+      Array.from({ length: 12 }, (_, index) => ({
+        ...sale,
+        id: index + 1,
+        quantity: 1,
+        totalPrice: 9.9,
+        soldAt: `2026-09-${String(index + 1).padStart(2, '0')}T10:00:00`,
+      }))
+    )
+
+    renderWithProviders(<SaleHistory productId={product.id} />)
+
+    expect(await screen.findByText('01/09/2026, 10:00')).toBeInTheDocument()
+    expect(screen.getAllByRole('row')).toHaveLength(11)
+    expect(screen.queryByText('11/09/2026, 10:00')).not.toBeInTheDocument()
+    expect(screen.getByText('1–10 de 12')).toBeInTheDocument()
+    expect(screen.getByText(/12 vendas · 12 unidades/)).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: /próxima página/i }))
+
+    expect(screen.getByText('11/09/2026, 10:00')).toBeInTheDocument()
+    expect(screen.getAllByRole('row')).toHaveLength(3)
+    expect(screen.getByText('11–12 de 12')).toBeInTheDocument()
+  })
+
   it('queries again when the period changes', async () => {
     vi.mocked(api.listSales).mockResolvedValue([])
 
