@@ -9,6 +9,7 @@ import { SaleHistory } from '@/components/sale/SaleHistory'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { QueryStateView } from '@/components/ui/QueryStateView'
+import { WasteRiskCard } from '@/components/wasteRisk/WasteRiskCard'
 import { useProduct } from '@/hooks/useProducts'
 import { AppError } from '@/lib/api/errors'
 
@@ -76,6 +77,9 @@ export function ProductDetails({
             </Box>
             <Box sx={{ gridColumn: '1 / -1' }}>
               <DemandForecastCard productId={product.id} />
+            </Box>
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <WasteRiskCard productId={product.id} />
             </Box>
           </Box>
         )}

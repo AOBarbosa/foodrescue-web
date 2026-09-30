@@ -2,6 +2,7 @@ import { act, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { productKeys } from '@/hooks/useProducts'
+import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import * as api from '@/lib/api/sales'
 import { apiError, product, sale } from '@/test/fixtures'
 import { renderHookWithProviders } from '@/test/render'
@@ -36,7 +37,7 @@ describe('useSaleHistory', () => {
 })
 
 describe('useRegisterSale', () => {
-  it('refreshes the product (its stock changed) and the history', async () => {
+  it('refreshes the product (its stock changed), its risk and the history', async () => {
     vi.mocked(api.registerSale).mockResolvedValue(sale)
 
     const { result, queryClient } = renderHookWithProviders(() =>
@@ -45,6 +46,7 @@ describe('useRegisterSale', () => {
     queryClient.setQueryData(productKeys.detail(product.id), product)
     queryClient.setQueryData(productKeys.list(), [product])
     queryClient.setQueryData(saleKeys.history(product.id, period), [])
+    queryClient.setQueryData(wasteRiskKeys.list(true), [])
     await act(() =>
       result.current.mutateAsync({ productId: product.id, quantity: 3 })
     )
@@ -58,6 +60,9 @@ describe('useRegisterSale', () => {
     expect(
       queryClient.getQueryState(saleKeys.history(product.id, period))
         ?.isInvalidated
+    ).toBe(true)
+    expect(
+      queryClient.getQueryState(wasteRiskKeys.list(true))?.isInvalidated
     ).toBe(true)
   })
 

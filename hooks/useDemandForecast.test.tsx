@@ -1,6 +1,7 @@
 import { act, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import * as api from '@/lib/api/demandForecasts'
 import { demandForecast } from '@/test/fixtures'
 import { renderHookWithProviders } from '@/test/render'
@@ -31,17 +32,21 @@ describe('useLatestDemandForecast', () => {
 })
 
 describe('usePredictDemand', () => {
-  it('stores the new forecast as the latest one', async () => {
+  it('stores the new forecast as the latest one and reassesses the risk', async () => {
     vi.mocked(api.predictDemand).mockResolvedValue(demandForecast)
 
     const { result, queryClient } = renderHookWithProviders(() =>
       usePredictDemand(10)
     )
+    queryClient.setQueryData(wasteRiskKeys.product(10), null)
     await act(() => result.current.mutateAsync())
 
     expect(api.predictDemand).toHaveBeenCalledWith(10)
     expect(queryClient.getQueryData(demandForecastKeys.latest(10))).toEqual(
       demandForecast
     )
+    expect(
+      queryClient.getQueryState(wasteRiskKeys.product(10))?.isInvalidated
+    ).toBe(true)
   })
 })

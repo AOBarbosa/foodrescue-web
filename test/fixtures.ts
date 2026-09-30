@@ -4,6 +4,7 @@ import type { DemandForecastDTO } from '@/types/demandForecast'
 import type { EstablishmentDTO } from '@/types/establishment'
 import type { ProductDTO } from '@/types/product'
 import type { SaleDTO } from '@/types/sale'
+import type { WasteRiskDTO } from '@/types/wasteRisk'
 
 export const establishment: EstablishmentDTO = {
   id: 1,
@@ -58,4 +59,17 @@ export const demandForecast: DemandForecastDTO = {
   rationale: null,
   calculatedAt: '2026-09-26T14:00:00',
   forecastUntil: '2026-09-26T22:00:00',
+}
+
+export const wasteRisk: WasteRiskDTO = {
+  productId: 10,
+  productName: 'Pão de queijo',
+  stockQuantity: 12,
+  predictedQuantity: 3,
+  expectedSurplus: 9,
+  riskPercentage: 75,
+  riskThreshold: 70,
+  atRisk: true,
+  forecastId: 7,
+  forecastCalculatedAt: '2026-09-26T14:00:00',
 }

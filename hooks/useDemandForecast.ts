@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import {
   getLatestDemandForecast,
   predictDemand,
@@ -19,12 +20,14 @@ export function useLatestDemandForecast(productId: number) {
   })
 }
 
+/** A new forecast is what the waste risk is assessed against. */
 export function usePredictDemand(productId: number) {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: () => predictDemand(productId),
     onSuccess: (forecast) => {
       queryClient.setQueryData(demandForecastKeys.latest(productId), forecast)
+      void queryClient.invalidateQueries({ queryKey: wasteRiskKeys.all })
     },
   })
 }
