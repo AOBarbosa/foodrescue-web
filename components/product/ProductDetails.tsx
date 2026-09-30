@@ -3,6 +3,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Alert, Box } from '@mui/material'
 
+import { DemandForecastCard } from '@/components/forecast/DemandForecastCard'
 import { RegisterSaleForm } from '@/components/sale/RegisterSaleForm'
 import { SaleHistory } from '@/components/sale/SaleHistory'
 import { LinkButton } from '@/components/ui/LinkButton'
@@ -72,6 +73,9 @@ export function ProductDetails({
             <RegisterSaleForm product={product} />
             <Box sx={{ gridColumn: '1 / -1' }}>
               <SaleHistory productId={product.id} />
+            </Box>
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <DemandForecastCard productId={product.id} />
             </Box>
           </Box>
         )}

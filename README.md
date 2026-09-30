@@ -36,8 +36,9 @@ npm run dev                  # http://localhost:3000
 | UC02 | Cadastro, listagem e detalhe de produtos     | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]` |
 | UC03 | Atualização de estoque e validade            | formulário em `/dashboard/products/[id]`                                     |
 | UC04 | Registro de venda e histórico por período    | formulário e histórico em `/dashboard/products/[id]`                         |
+| UC05 | Previsão de demanda (estatística ou IA)      | card em `/dashboard/products/[id]`                                           |
 
-UC05 em diante só ganham tela quando a API correspondente existir no backend.
+As demais UCs só ganham tela quando a API correspondente existir no backend.
 
 No VS Code, `.vscode/settings.json` formata com Prettier e aplica os fixes do
 ESLint (ordenação de imports) ao salvar. Instale as extensões recomendadas
