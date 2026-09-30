@@ -2,6 +2,7 @@ import { AppError, type AppErrorCode } from '@/lib/api/errors'
 import type { ApiSubError } from '@/types/api'
 import type { DemandForecastDTO } from '@/types/demandForecast'
 import type { EstablishmentDTO } from '@/types/establishment'
+import type { WasteAndSavingsIndicatorsDTO } from '@/types/indicators'
 import type { ProductDTO } from '@/types/product'
 import type { SaleDTO } from '@/types/sale'
 import type { WasteRiskDTO } from '@/types/wasteRisk'
@@ -72,4 +73,28 @@ export const wasteRisk: WasteRiskDTO = {
   atRisk: true,
   forecastId: 7,
   forecastCalculatedAt: '2026-09-26T14:00:00',
+}
+
+export const indicators: WasteAndSavingsIndicatorsDTO = {
+  period: {
+    startDate: '2026-09-01',
+    endDate: '2026-09-30',
+  },
+  wasteAvoidedUnits: 45,
+  recoveredRevenue: 382.5,
+  acceptedRecommendations: 12,
+  refusedRecommendations: 3,
+  adjustedRecommendations: 2,
+  comparisonPeriod: {
+    period: {
+      startDate: '2026-08-02',
+      endDate: '2026-08-31',
+    },
+    wasteAvoidedUnits: 30,
+    recoveredRevenue: 250.0,
+    acceptedRecommendations: 8,
+    refusedRecommendations: 4,
+    adjustedRecommendations: 1,
+    comparisonPeriod: null,
+  },
 }
