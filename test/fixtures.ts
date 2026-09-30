@@ -1,6 +1,7 @@
 import { AppError, type AppErrorCode } from '@/lib/api/errors'
 import type { ApiSubError } from '@/types/api'
 import type { DemandForecastDTO } from '@/types/demandForecast'
+import type { DiscountRecommendationDTO } from '@/types/discountRecommendation'
 import type { EstablishmentDTO } from '@/types/establishment'
 import type { ProductDTO } from '@/types/product'
 import type { SaleDTO } from '@/types/sale'
@@ -72,4 +73,19 @@ export const wasteRisk: WasteRiskDTO = {
   atRisk: true,
   forecastId: 7,
   forecastCalculatedAt: '2026-09-26T14:00:00',
+}
+
+export const discountRecommendation: DiscountRecommendationDTO = {
+  id: 30,
+  productId: product.id,
+  productName: product.name,
+  type: 'DISCOUNT',
+  suggestedPercentage: 30,
+  status: 'PENDING',
+  originalPrice: 9.9,
+  currentPrice: 9.9,
+  priceWithDiscount: 6.93,
+  createdAt: '2026-09-26T15:00:00',
+  expiresAt: '2026-09-27T15:00:00',
+  respondedAt: null,
 }
