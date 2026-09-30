@@ -1,26 +1,26 @@
 /** Mirrors `SaleDTO` and `RegisterSaleDTO` in foodrescue-api (UC04). */
 
 export type SaleDTO = {
-  id: number;
-  productId: number;
-  quantity: number;
-  unitPrice: number;
+  id: number
+  productId: number
+  quantity: number
+  unitPrice: number
   /** `quantity * unitPrice`, calculated by the backend. */
-  totalPrice: number;
+  totalPrice: number
   /** ISO local datetime */
-  soldAt: string;
+  soldAt: string
   /** ISO local datetime */
-  creationDate: string | null;
-};
+  creationDate: string | null
+}
 
 export type RegisterSaleRequest = {
-  productId: number;
-  quantity: number;
+  productId: number
+  quantity: number
   /** Defaults to the product's `currentPrice` when omitted. */
-  unitPrice?: number;
+  unitPrice?: number
   /** ISO local datetime; defaults to now when omitted. */
-  soldAt?: string;
-};
+  soldAt?: string
+}
 
 /**
  * Period of a sales history query. `startDate` is inclusive and `endDate` is
@@ -30,9 +30,9 @@ export type RegisterSaleRequest = {
  */
 export type SalePeriod = {
   /** ISO local datetime */
-  startDate: string;
+  startDate: string
   /** ISO local datetime */
-  endDate: string;
-};
+  endDate: string
+}
 
-export type SaleHistoryQuery = SalePeriod & { productId: number };
+export type SaleHistoryQuery = SalePeriod & { productId: number }

@@ -1,6 +1,7 @@
-"use client";
+'use client'
 
-import { useMemo, useState } from "react";
+import { useMemo, useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Alert,
   Button,
@@ -10,59 +11,68 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { useRegisterSale } from "@/hooks/useSales";
-import { AppError } from "@/lib/api/errors";
-import { formatCurrency } from "@/lib/format";
-import { applyServerErrors } from "@/lib/forms/applyServerErrors";
+} from '@mui/material'
+import { Controller, useForm } from 'react-hook-form'
+
+import { useRegisterSale } from '@/hooks/useSales'
+import { AppError } from '@/lib/api/errors'
+import { formatCurrency } from '@/lib/format'
+import { applyServerErrors } from '@/lib/forms/applyServerErrors'
 import {
   registerSaleSchema,
   SALE_FORM_FIELDS,
-  toRegisterSaleRequest,
   type SaleFormValues,
-} from "@/schemas/sale";
-import type { ProductDTO } from "@/types/product";
+  toRegisterSaleRequest,
+} from '@/schemas/sale'
+import type { ProductDTO } from '@/types/product'
 
-const EMPTY_FORM: SaleFormValues = { quantity: "", unitPrice: "", soldAt: "" };
+const EMPTY_FORM: SaleFormValues = { quantity: '', unitPrice: '', soldAt: '' }
 
 export function RegisterSaleForm({ product }: { product: ProductDTO }) {
-  const registerSale = useRegisterSale(product.id);
-  const [formError, setFormError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const outOfStock = product.stockQuantity <= 0;
+  const registerSale = useRegisterSale(product.id)
+  const [formError, setFormError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const outOfStock = product.stockQuantity <= 0
   const resolver = useMemo(
     () => zodResolver(registerSaleSchema(product.stockQuantity)),
-    [product.stockQuantity],
-  );
+    [product.stockQuantity]
+  )
   const { control, handleSubmit, setError, reset } = useForm<SaleFormValues>({
     resolver,
     defaultValues: EMPTY_FORM,
-  });
+  })
 
   const onSubmit = handleSubmit(async (values) => {
-    setFormError(null);
-    setSuccess(null);
+    setFormError(null)
+    setSuccess(null)
     try {
-      const sale = await registerSale.mutateAsync(toRegisterSaleRequest(product.id, values));
-      reset(EMPTY_FORM);
+      const sale = await registerSale.mutateAsync(
+        toRegisterSaleRequest(product.id, values)
+      )
+      reset(EMPTY_FORM)
       setSuccess(
-        `Venda registrada: ${sale.quantity} ${sale.quantity === 1 ? "unidade" : "unidades"} a ${formatCurrency(sale.unitPrice)} (total ${formatCurrency(sale.totalPrice)}). O estoque foi atualizado.`,
-      );
+        `Venda registrada: ${sale.quantity} ${sale.quantity === 1 ? 'unidade' : 'unidades'} a ${formatCurrency(sale.unitPrice)} (total ${formatCurrency(sale.totalPrice)}). O estoque foi atualizado.`
+      )
     } catch (error) {
       // The only business rule broken here is selling more than the stock —
       // the backend checks it again because the stock may have changed.
-      if (error instanceof AppError && error.code === "BUSINESS_RULE_VIOLATION") {
-        setError("quantity", { type: "server", message: "Estoque insuficiente." }, { shouldFocus: true });
+      if (
+        error instanceof AppError &&
+        error.code === 'BUSINESS_RULE_VIOLATION'
+      ) {
+        setError(
+          'quantity',
+          { type: 'server', message: 'Estoque insuficiente.' },
+          { shouldFocus: true }
+        )
         setFormError(
-          "Estoque insuficiente para esta venda. O estoque mudou desde o carregamento da página — confira a quantidade disponível.",
-        );
-        return;
+          'Estoque insuficiente para esta venda. O estoque mudou desde o carregamento da página — confira a quantidade disponível.'
+        )
+        return
       }
-      setFormError(applyServerErrors(error, setError, SALE_FORM_FIELDS));
+      setFormError(applyServerErrors(error, setError, SALE_FORM_FIELDS))
     }
-  });
+  })
 
   return (
     <Card>
@@ -71,8 +81,8 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
           Registrar venda
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-          A quantidade vendida é abatida do estoque. Preço e data em branco usam o preço atual do
-          produto e o momento do registro.
+          A quantidade vendida é abatida do estoque. Preço e data em branco usam
+          o preço atual do produto e o momento do registro.
         </Typography>
         <Stack component="form" noValidate onSubmit={onSubmit} spacing={2}>
           <Controller
@@ -87,9 +97,11 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
                 error={!!fieldState.error}
                 helperText={
                   fieldState.error?.message ??
-                  `${product.stockQuantity} ${product.stockQuantity === 1 ? "unidade" : "unidades"} em estoque`
+                  `${product.stockQuantity} ${product.stockQuantity === 1 ? 'unidade' : 'unidades'} em estoque`
                 }
-                slotProps={{ htmlInput: { min: 1, step: 1, inputMode: "numeric" } }}
+                slotProps={{
+                  htmlInput: { min: 1, step: 1, inputMode: 'numeric' },
+                }}
               />
             )}
           />
@@ -100,7 +112,7 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
               <TextField
                 {...field}
                 label="Preço unitário praticado"
-                placeholder={product.currentPrice.toFixed(2).replace(".", ",")}
+                placeholder={product.currentPrice.toFixed(2).replace('.', ',')}
                 disabled={outOfStock}
                 error={!!fieldState.error}
                 helperText={
@@ -108,8 +120,12 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
                   `Em branco: ${formatCurrency(product.currentPrice)} (preço atual)`
                 }
                 slotProps={{
-                  input: { startAdornment: <InputAdornment position="start">R$</InputAdornment> },
-                  htmlInput: { inputMode: "decimal" },
+                  input: {
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    ),
+                  },
+                  htmlInput: { inputMode: 'decimal' },
                 }}
               />
             )}
@@ -124,14 +140,15 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
                 label="Data e hora da venda"
                 disabled={outOfStock}
                 error={!!fieldState.error}
-                helperText={fieldState.error?.message ?? "Em branco: agora"}
+                helperText={fieldState.error?.message ?? 'Em branco: agora'}
                 slotProps={{ inputLabel: { shrink: true } }}
               />
             )}
           />
           {outOfStock && (
             <Alert severity="info">
-              Este produto está sem estoque. Atualize o estoque para registrar novas vendas.
+              Este produto está sem estoque. Atualize o estoque para registrar
+              novas vendas.
             </Alert>
           )}
           {formError && <Alert severity="error">{formError}</Alert>}
@@ -151,5 +168,5 @@ export function RegisterSaleForm({ product }: { product: ProductDTO }) {
         </Stack>
       </CardContent>
     </Card>
-  );
+  )
 }
