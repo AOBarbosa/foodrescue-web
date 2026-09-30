@@ -30,7 +30,7 @@ describe('toAppError', () => {
         code: 'VALIDATION_ERROR',
         data: {
           timestamp: '2026-09-24T10:00:00',
-          status: 422,
+          status: '422 UNPROCESSABLE_ENTITY',
           message: 'Validation failed',
           messageCode: 'VALIDATION_ERROR',
           subErrors: [
@@ -64,7 +64,7 @@ describe('toAppError', () => {
         code: 'UNAUTHORIZED',
         data: {
           timestamp: '',
-          status: 401,
+          status: '401 UNAUTHORIZED',
           message: 'Authentication required',
           messageCode: 'UNAUTHORIZED',
         },
@@ -74,6 +74,31 @@ describe('toAppError', () => {
     expect(error.status).toBe(401)
     expect(error.code).toBe('UNAUTHORIZED')
     expect(error.subErrors).toEqual([])
+  })
+
+  /*
+   * The envelope's `status` is Spring's `HttpStatus` enum as Jackson writes it
+   * (`"404 NOT_FOUND"`), so taking it as the status made every `status === 404`
+   * and `status >= 500` comparison in the app silently false.
+   */
+  it('takes the status from the HTTP response, not from the envelope', () => {
+    const error = toAppError(
+      axiosErrorWith(404, {
+        success: false,
+        message: 'DemandForecast not found: product 7',
+        code: 'ENTITY_NOT_FOUND',
+        data: {
+          timestamp: '2026-09-30T15:15:27',
+          status: '404 NOT_FOUND',
+          message: 'DemandForecast not found: product 7',
+          messageCode: 'ENTITY_NOT_FOUND',
+          subErrors: null,
+        },
+      })
+    )
+
+    expect(error.status).toBe(404)
+    expect(error.code).toBe('ENTITY_NOT_FOUND')
   })
 
   it('maps a missing response to NETWORK_ERROR', () => {

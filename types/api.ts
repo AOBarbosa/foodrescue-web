@@ -25,7 +25,12 @@ export type ApiSubError = {
 
 export type ApiError = {
   timestamp: string
-  status: number
+  /**
+   * Spring's `HttpStatus` enum as Jackson serializes it — `"404 NOT_FOUND"`,
+   * not `404`. Use the HTTP response status instead of this when the code
+   * matters; `AppError.status` already does.
+   */
+  status: string
   message: string
   messageCode: MessageCode
   subErrors?: ApiSubError[]

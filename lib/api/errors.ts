@@ -68,7 +68,11 @@ export function toAppError(error: unknown): AppError {
     if (isEnvelope(body) && isApiError(body.data)) {
       return new AppError({
         message: body.data.message || body.message,
-        status: body.data.status ?? response.status,
+        // The envelope's own `status` is Spring's `HttpStatus` enum serialized
+        // by Jackson — the string `"404 NOT_FOUND"`, not the number. Only the
+        // HTTP response carries a status that comparisons like `=== 404` can
+        // rely on.
+        status: response.status,
         code: body.data.messageCode,
         subErrors: body.data.subErrors,
       })
