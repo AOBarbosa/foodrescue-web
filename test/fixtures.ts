@@ -1,7 +1,9 @@
 import { AppError, type AppErrorCode } from '@/lib/api/errors'
 import type { ApiSubError } from '@/types/api'
 import type { DemandForecastDTO } from '@/types/demandForecast'
+import type { DiscountRecommendationDTO } from '@/types/discountRecommendation'
 import type { EstablishmentDTO } from '@/types/establishment'
+import type { WasteAndSavingsIndicatorsDTO } from '@/types/indicators'
 import type { ProductDTO } from '@/types/product'
 import type { SaleDTO } from '@/types/sale'
 import type { WasteRiskDTO } from '@/types/wasteRisk'
@@ -72,4 +74,43 @@ export const wasteRisk: WasteRiskDTO = {
   atRisk: true,
   forecastId: 7,
   forecastCalculatedAt: '2026-09-26T14:00:00',
+}
+
+export const discountRecommendation: DiscountRecommendationDTO = {
+  id: 30,
+  productId: product.id,
+  productName: product.name,
+  type: 'DISCOUNT',
+  suggestedPercentage: 30,
+  status: 'PENDING',
+  originalPrice: 9.9,
+  currentPrice: 9.9,
+  priceWithDiscount: 6.93,
+  createdAt: '2026-09-26T15:00:00',
+  expiresAt: '2026-09-27T15:00:00',
+  respondedAt: null,
+}
+
+export const indicators: WasteAndSavingsIndicatorsDTO = {
+  period: {
+    startDate: '2026-09-01',
+    endDate: '2026-09-30',
+  },
+  wasteAvoidedUnits: 45,
+  recoveredRevenue: 382.5,
+  acceptedRecommendations: 12,
+  refusedRecommendations: 3,
+  adjustedRecommendations: 2,
+  comparisonPeriod: {
+    period: {
+      startDate: '2026-08-02',
+      endDate: '2026-08-31',
+    },
+    wasteAvoidedUnits: 30,
+    recoveredRevenue: 250.0,
+    acceptedRecommendations: 8,
+    refusedRecommendations: 4,
+    adjustedRecommendations: 1,
+    comparisonPeriod: null,
+  },
 }

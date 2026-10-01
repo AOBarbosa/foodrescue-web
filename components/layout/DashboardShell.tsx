@@ -22,6 +22,8 @@ import { BrandLink } from './BrandLink'
 const NAV_ITEMS = [
   { href: '/dashboard/products', label: 'Produtos' },
   { href: '/dashboard/waste-risks', label: 'Risco de desperdício' },
+  { href: '/dashboard/discount-recommendations', label: 'Preço dinâmico' },
+  { href: '/dashboard/indicators', label: 'Indicadores' },
   { href: '/dashboard/profile', label: 'Perfil' },
 ]
 
