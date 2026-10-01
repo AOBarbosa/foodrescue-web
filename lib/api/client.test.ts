@@ -17,7 +17,8 @@ const unauthorizedBody = {
   code: 'UNAUTHORIZED',
   data: {
     timestamp: '',
-    status: 401,
+    // As the backend serializes it: Spring's `HttpStatus`, not a number.
+    status: '401 UNAUTHORIZED',
     message: 'Authentication required',
     messageCode: 'UNAUTHORIZED',
   },
