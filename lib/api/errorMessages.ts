@@ -33,6 +33,13 @@ const MESSAGES_BY_SUB_ERROR_CODE: Record<string, string> = {
   UNIT_PRICE_NOT_POSITIVE: 'O preço deve ser maior que zero.',
   SOLD_AT_NULL: 'Informe a data e a hora da venda.',
   SOLD_AT_IN_FUTURE: 'A venda não pode estar no futuro.',
+  OFFER_WITHOUT_PRODUCT: 'Informe o produto da oferta.',
+  DISCOUNTED_PRICE_NOT_POSITIVE: 'O preço da oferta deve ser maior que zero.',
+  DISCOUNTED_PRICE_ABOVE_ORIGINAL:
+    'O preço da oferta não pode passar do preço original do produto.',
+  OFFER_WITHOUT_QUANTITY: 'A quantidade ofertada deve ser maior que zero.',
+  OFFER_WITHOUT_DEADLINE: 'Informe até quando a oferta aceita pedidos.',
+  OFFER_DEADLINE_IN_THE_PAST: 'O prazo da oferta precisa estar no futuro.',
   NotBlank: 'Campo obrigatório.',
   NotNull: 'Campo obrigatório.',
   Email: 'E-mail inválido.',

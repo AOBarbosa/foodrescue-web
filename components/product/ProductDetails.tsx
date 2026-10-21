@@ -4,6 +4,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Alert, Box } from '@mui/material'
 
 import { DemandForecastCard } from '@/components/forecast/DemandForecastCard'
+import { ProductOfferCard } from '@/components/offer/ProductOfferCard'
 import { DiscountRecommendationCard } from '@/components/recommendation/DiscountRecommendationCard'
 import { RecommendationChainCard } from '@/components/recommendation/RecommendationChainCard'
 import { RegisterSaleForm } from '@/components/sale/RegisterSaleForm'
@@ -89,6 +90,9 @@ export function ProductDetails({
             </Box>
             <Box sx={{ gridColumn: '1 / -1' }}>
               <RecommendationChainCard productId={product.id} />
+            </Box>
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <ProductOfferCard product={product} />
             </Box>
           </Box>
         )}

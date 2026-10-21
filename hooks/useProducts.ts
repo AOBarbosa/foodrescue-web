@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { offerKeys } from '@/hooks/useOffers'
 import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import {
   createProduct,
@@ -40,7 +41,10 @@ export function useCreateProduct() {
   })
 }
 
-/** The new stock changes the product's waste risk too. */
+/**
+ * The new stock changes the product's waste risk too, and a stock set to zero
+ * closes the product's offers on the backend (UC08).
+ */
 export function useUpdateInventory(id: number) {
   const queryClient = useQueryClient()
   return useMutation({
@@ -50,6 +54,7 @@ export function useUpdateInventory(id: number) {
       queryClient.setQueryData(productKeys.detail(product.id), product)
       void queryClient.invalidateQueries({ queryKey: productKeys.list() })
       void queryClient.invalidateQueries({ queryKey: wasteRiskKeys.all })
+      void queryClient.invalidateQueries({ queryKey: offerKeys.list() })
     },
   })
 }

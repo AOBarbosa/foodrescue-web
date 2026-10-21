@@ -39,6 +39,7 @@ npm run dev                  # http://localhost:3000
 | UC05 | Previsão de demanda (estatística ou IA)                       | card em `/dashboard/products/[id]`                                           |
 | UC06 | Risco de desperdício (painel e por produto)                   | `/dashboard/waste-risks`, card em `/dashboard/products/[id]`                 |
 | UC07 | Preço dinâmico: sugerir, aceitar, ajustar ou recusar desconto | `/dashboard/discount-recommendations`, card em `/dashboard/products/[id]`    |
+| UC08 | Oferta de excedente: publicar, acompanhar e encerrar          | `/dashboard/offers`, card em `/dashboard/products/[id]`                      |
 | UC12 | Indicadores de desperdício e economia                         | `/dashboard/indicators`                                                      |
 
 As demais UCs só ganham tela quando a API correspondente existir no backend.
@@ -69,6 +70,7 @@ components/
   forecast/
   wasteRisk/
   recommendation/
+  offer/
 hooks/                 um hook TanStack Query por operação
 lib/
   api/client.ts        a única instância do Axios
