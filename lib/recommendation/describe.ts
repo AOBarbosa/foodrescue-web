@@ -1,6 +1,9 @@
 import type { ChipProps } from '@mui/material'
 
-import type { RecommendationStatus } from '@/types/discountRecommendation'
+import type {
+  DiscountRecommendationDTO,
+  RecommendationStatus,
+} from '@/types/discountRecommendation'
 
 export const STATUS_LABELS: Record<RecommendationStatus, string> = {
   PENDING: 'Aguardando resposta',
@@ -16,6 +19,28 @@ export const STATUS_COLORS: Record<RecommendationStatus, ChipProps['color']> = {
   ADJUSTED: 'success',
   REFUSED: 'default',
   EXPIRED: 'default',
+}
+
+/** UC10: a recommendation to give the offer priority instead of a discount. */
+export function isPriority(
+  recommendation: Pick<DiscountRecommendationDTO, 'type'>
+): boolean {
+  return recommendation.type === 'SURPLUS_DESTINATION'
+}
+
+/** UC10: generated after an earlier recommendation of the same product. */
+export function isFollowUp(
+  recommendation: Pick<DiscountRecommendationDTO, 'previousRecommendationId'>
+): boolean {
+  return recommendation.previousRecommendationId != null
+}
+
+/** What the recommendation proposes, for headings and chain steps. */
+export function recommendationTitle(
+  recommendation: DiscountRecommendationDTO
+): string {
+  if (isPriority(recommendation)) return 'Destacar a oferta para os clientes'
+  return isFollowUp(recommendation) ? 'Desconto adicional' : 'Desconto sugerido'
 }
 
 /** Accepting and adjusting are the two answers that change the price. */

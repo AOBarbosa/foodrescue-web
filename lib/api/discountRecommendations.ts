@@ -39,6 +39,20 @@ export async function listProductRecommendations(
 }
 
 /**
+ * UC10. The product's recommendations of the day, oldest first: the initial
+ * one and the follow-ups generated while it stayed at risk.
+ */
+export async function listRecommendationChain(
+  productId: number
+): Promise<DiscountRecommendationDTO[]> {
+  return unwrap(
+    await apiClient.get<ApiResponse<DiscountRecommendationDTO[]>>(
+      `/products/${productId}/recommendation-chain`
+    )
+  )
+}
+
+/**
  * The establishment's recommendations still waiting for an answer, oldest
  * first. Reading this is what expires the stale ones on the backend.
  */

@@ -89,6 +89,7 @@ export const discountRecommendation: DiscountRecommendationDTO = {
   createdAt: '2026-09-26T15:00:00',
   expiresAt: '2026-09-27T15:00:00',
   respondedAt: null,
+  previousRecommendationId: null,
 }
 
 export const indicators: WasteAndSavingsIndicatorsDTO = {
