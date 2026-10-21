@@ -44,14 +44,17 @@ export default function HomePage() {
           spacing={2}
           sx={{ mt: 4 }}
         >
+          <LinkButton href="/offers" variant="contained" size="large">
+            Explorar ofertas
+          </LinkButton>
           <LinkButton
             href="/establishment/register"
-            variant="contained"
+            variant="outlined"
             size="large"
           >
             Cadastrar meu estabelecimento
           </LinkButton>
-          <LinkButton href="/establishments" variant="outlined" size="large">
+          <LinkButton href="/establishments" variant="text" size="large">
             Ver estabelecimentos
           </LinkButton>
         </Stack>

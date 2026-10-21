@@ -5,6 +5,8 @@ import { AppBar, Button, Container, Stack, Toolbar } from '@mui/material'
 
 import { useSession } from '@/hooks/useSession'
 import {
+  CONSUMER_HOME_PATH,
+  CONSUMER_LOGIN_PATH,
   ESTABLISHMENT_HOME_PATH,
   ESTABLISHMENT_LOGIN_PATH,
 } from '@/lib/auth/constants'
@@ -34,19 +36,32 @@ export function PublicHeader() {
             {session ? (
               <Button
                 component={Link}
-                href={ESTABLISHMENT_HOME_PATH}
+                href={
+                  session.role === 'CONSUMER'
+                    ? CONSUMER_HOME_PATH
+                    : ESTABLISHMENT_HOME_PATH
+                }
                 variant="contained"
               >
-                Meu painel
+                {session.role === 'CONSUMER' ? 'Ver ofertas' : 'Meu painel'}
               </Button>
             ) : (
-              <Button
-                component={Link}
-                href={ESTABLISHMENT_LOGIN_PATH}
-                variant="outlined"
-              >
-                Entrar
-              </Button>
+              <>
+                <Button
+                  component={Link}
+                  href={CONSUMER_LOGIN_PATH}
+                  color="inherit"
+                >
+                  Sou consumidor
+                </Button>
+                <Button
+                  component={Link}
+                  href={ESTABLISHMENT_LOGIN_PATH}
+                  variant="outlined"
+                >
+                  Entrar
+                </Button>
+              </>
             )}
           </Stack>
         </Toolbar>

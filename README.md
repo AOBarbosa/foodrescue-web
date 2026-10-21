@@ -40,6 +40,7 @@ npm run dev                  # http://localhost:3000
 | UC06 | Risco de desperdício (painel e por produto)                   | `/dashboard/waste-risks`, card em `/dashboard/products/[id]`                 |
 | UC07 | Preço dinâmico: sugerir, aceitar, ajustar ou recusar desconto | `/dashboard/discount-recommendations`, card em `/dashboard/products/[id]`    |
 | UC08 | Oferta de excedente: publicar, acompanhar e encerrar          | `/dashboard/offers`, card em `/dashboard/products/[id]`                      |
+| UC09 | Consumidor: cadastro/login, ofertas ativas e reservas         | `/consumer/register`, `/consumer/login`, `/offers`, `/orders`                |
 | UC12 | Indicadores de desperdício e economia                         | `/dashboard/indicators`                                                      |
 
 As demais UCs só ganham tela quando a API correspondente existir no backend.
@@ -60,11 +61,13 @@ Vitest + React Testing Library.
 app/
   (public)/            landing e listagem pública de estabelecimentos
   (establishment)/     login/cadastro e painel (/dashboard/*) do estabelecimento
-  (consumer)/          reservado para a jornada do consumidor (Sprint 3)
+  (consumer)/          login/cadastro e portal (/offers, /orders) do consumidor
 components/
   ui/                  o que o MUI não cobre (EmptyState, PageHeader, ...)
   layout/              cabeçalhos e shell do painel
   establishment/       um componente por caso de uso (formulários, perfil, lista)
+  consumer/
+  offerOrder/
   product/
   sale/
   forecast/

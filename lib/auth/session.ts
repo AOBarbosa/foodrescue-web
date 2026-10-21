@@ -7,7 +7,7 @@ import { SESSION_COOKIE, TOKEN_COOKIE } from './constants'
  * never decoded on the client: this is what the API handed back, persisted.
  */
 export type Session = {
-  role: 'ESTABLISHMENT'
+  role: 'ESTABLISHMENT' | 'CONSUMER'
   id: number
   name: string
 }
