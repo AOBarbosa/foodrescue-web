@@ -1,11 +1,13 @@
 import { AppError, type AppErrorCode } from '@/lib/api/errors'
 import { toIsoDateTime } from '@/lib/format'
 import type { ApiSubError } from '@/types/api'
+import type { ConsumerDTO } from '@/types/consumer'
 import type { DemandForecastDTO } from '@/types/demandForecast'
 import type { DiscountRecommendationDTO } from '@/types/discountRecommendation'
 import type { EstablishmentDTO } from '@/types/establishment'
 import type { WasteAndSavingsIndicatorsDTO } from '@/types/indicators'
 import type { OfferDTO } from '@/types/offer'
+import type { OfferOrderDTO } from '@/types/offerOrder'
 import type { ProductDTO } from '@/types/product'
 import type { SaleDTO } from '@/types/sale'
 import type { WasteRiskDTO } from '@/types/wasteRisk'
@@ -17,6 +19,13 @@ export const establishment: EstablishmentDTO = {
   address: 'Rua das Flores, 123 - Natal/RN',
   category: 'BAKERY',
   email: 'contato@paoquente.com',
+  password: null,
+}
+
+export const consumer: ConsumerDTO = {
+  id: 50,
+  name: 'Maria Silva',
+  email: 'maria@example.com',
   password: null,
 }
 
@@ -113,6 +122,32 @@ export const offer: OfferDTO = {
   expiresAt: isoDateTimeIn(6),
   status: 'ACTIVE',
   priority: false,
+  createdAt: '2026-09-26T15:00:00',
+}
+
+export const availableOffer: OfferDTO = {
+  id: 700,
+  productId: product.id,
+  productName: product.name,
+  originalPrice: 9.9,
+  discountedPrice: 5.2,
+  availableQuantity: 6,
+  expiresAt: '2026-09-26T22:00:00',
+  status: 'ACTIVE',
+  priority: false,
+  createdAt: '2026-09-26T14:00:00',
+}
+
+export const offerOrder: OfferOrderDTO = {
+  id: 900,
+  offerId: availableOffer.id,
+  productId: availableOffer.productId,
+  productName: availableOffer.productName,
+  consumerId: consumer.id,
+  quantity: 2,
+  unitPrice: 5.2,
+  totalPrice: 10.4,
+  status: 'RESERVED',
   createdAt: '2026-09-26T15:00:00',
 }
 
