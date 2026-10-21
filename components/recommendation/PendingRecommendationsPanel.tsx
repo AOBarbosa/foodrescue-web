@@ -9,6 +9,7 @@ import { LinkButton } from '@/components/ui/LinkButton'
 import { QueryStateView } from '@/components/ui/QueryStateView'
 import { usePendingRecommendations } from '@/hooks/useDiscountRecommendations'
 import { formatCurrency, formatDateTime } from '@/lib/format'
+import { isFollowUp, recommendationTitle } from '@/lib/recommendation/describe'
 
 import { RecommendationActions } from './RecommendationActions'
 import { PriceChange } from './RecommendationIndicators'
@@ -48,6 +49,11 @@ export function PendingRecommendationsPanel() {
             <Card key={recommendation.id}>
               <CardContent>
                 <Stack spacing={2}>
+                  {isFollowUp(recommendation) && (
+                    <Typography variant="overline" color="text.secondary">
+                      Nova recomendação · {recommendationTitle(recommendation)}
+                    </Typography>
+                  )}
                   <Stack
                     direction={{ xs: 'column', md: 'row' }}
                     spacing={2}

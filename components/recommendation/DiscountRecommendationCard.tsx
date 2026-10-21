@@ -24,7 +24,9 @@ import { formatCurrency, formatDateTime, formatPercent } from '@/lib/format'
 import {
   changedThePrice,
   isAlreadyPending,
+  isPriority,
   parseNotAtRisk,
+  recommendationTitle,
 } from '@/lib/recommendation/describe'
 import type { DiscountRecommendationDTO } from '@/types/discountRecommendation'
 
@@ -75,7 +77,9 @@ function PendingRecommendation({
           spacing={1.5}
           sx={{ alignItems: 'center', mb: 0.5 }}
         >
-          <Typography color="text.secondary">Desconto sugerido</Typography>
+          <Typography color="text.secondary">
+            {recommendationTitle(recommendation)}
+          </Typography>
           <RecommendationStatusChip status={recommendation.status} />
         </Stack>
         <PriceChange recommendation={recommendation} />
@@ -109,10 +113,14 @@ function History({ answered }: { answered: DiscountRecommendationDTO[] }) {
           >
             <RecommendationStatusChip status={recommendation.status} />
             <Typography variant="body2">
-              {formatPercent(recommendation.suggestedPercentage)}
+              {isPriority(recommendation) ||
+              recommendation.suggestedPercentage === null
+                ? 'Prioridade'
+                : formatPercent(recommendation.suggestedPercentage)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {changedThePrice(recommendation.status)
+              {changedThePrice(recommendation.status) &&
+              !isPriority(recommendation)
                 ? `preço para ${formatCurrency(recommendation.priceWithDiscount)}`
                 : 'preço mantido'}
             </Typography>

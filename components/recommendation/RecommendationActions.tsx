@@ -19,7 +19,7 @@ import { useRespondToRecommendation } from '@/hooks/useDiscountRecommendations'
 import { AppError } from '@/lib/api/errors'
 import { formatCurrency } from '@/lib/format'
 import { applyServerErrors } from '@/lib/forms/applyServerErrors'
-import { isNotPending } from '@/lib/recommendation/describe'
+import { isNotPending, isPriority } from '@/lib/recommendation/describe'
 import {
   ADJUST_FORM_FIELDS,
   type AdjustRecommendationFormValues,
@@ -52,10 +52,12 @@ export function RecommendationActions({
     useForm<AdjustRecommendationFormValues>({
       resolver: zodResolver(adjustRecommendationSchema),
       defaultValues: {
-        adjustedPercentage: String(recommendation.suggestedPercentage),
+        adjustedPercentage: String(recommendation.suggestedPercentage ?? ''),
       },
     })
   const typed = watch('adjustedPercentage')
+  // UC10: a priority recommendation has no percentage to adjust.
+  const priority = isPriority(recommendation)
 
   async function send(request: RespondToRecommendationRequest) {
     setFormError(null)
@@ -92,13 +94,15 @@ export function RecommendationActions({
         >
           Aceitar
         </Button>
-        <Button
-          variant="outlined"
-          startIcon={<TuneIcon />}
-          onClick={() => setAdjusting((open) => !open)}
-        >
-          {adjusting ? 'Cancelar ajuste' : 'Ajustar'}
-        </Button>
+        {!priority && (
+          <Button
+            variant="outlined"
+            startIcon={<TuneIcon />}
+            onClick={() => setAdjusting((open) => !open)}
+          >
+            {adjusting ? 'Cancelar ajuste' : 'Ajustar'}
+          </Button>
+        )}
         <Button
           color="inherit"
           startIcon={<CloseIcon />}
@@ -108,7 +112,7 @@ export function RecommendationActions({
         </Button>
       </Stack>
 
-      {adjusting && (
+      {adjusting && !priority && (
         <Stack
           component="form"
           noValidate
@@ -152,8 +156,9 @@ export function RecommendationActions({
       {formError && <Alert severity="error">{formError}</Alert>}
 
       <Typography variant="caption" color="text.secondary">
-        Aceitar ou ajustar altera o preço atual do produto. Recusar mantém o
-        preço como está.
+        {priority
+          ? 'Aceitar destaca a oferta para os clientes sem mexer no preço. Recusar mantém tudo como está.'
+          : 'Aceitar ou ajustar altera o preço atual do produto. Recusar mantém o preço como está.'}
       </Typography>
     </Stack>
   )

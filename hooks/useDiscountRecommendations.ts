@@ -4,6 +4,7 @@ import { productKeys } from '@/hooks/useProducts'
 import {
   listPendingRecommendations,
   listProductRecommendations,
+  listRecommendationChain,
   recommendDiscount,
   respondToRecommendation,
 } from '@/lib/api/discountRecommendations'
@@ -14,6 +15,16 @@ export const discountRecommendationKeys = {
   pending: () => [...discountRecommendationKeys.all, 'pending'] as const,
   product: (productId: number) =>
     [...discountRecommendationKeys.all, 'product', productId] as const,
+  chain: (productId: number) =>
+    [...discountRecommendationKeys.all, 'chain', productId] as const,
+}
+
+/** UC10: today's chain of recommendations for a product, oldest first. */
+export function useRecommendationChain(productId: number) {
+  return useQuery({
+    queryKey: discountRecommendationKeys.chain(productId),
+    queryFn: () => listRecommendationChain(productId),
+  })
 }
 
 export function useProductRecommendations(productId: number) {

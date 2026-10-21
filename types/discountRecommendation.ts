@@ -10,7 +10,10 @@ export const RECOMMENDATION_STATUSES = [
 
 export type RecommendationStatus = (typeof RECOMMENDATION_STATUSES)[number]
 
-/** `SURPLUS_DESTINATION` belongs to UC10; UC07 only produces `DISCOUNT`. */
+/**
+ * UC10 follow-ups: `DISCOUNT` is an additional discount;
+ * `SURPLUS_DESTINATION` (no percentage) means giving the offer priority.
+ */
 export type RecommendationType = 'DISCOUNT' | 'SURPLUS_DESTINATION'
 
 export type RecommendationDecision = 'ACCEPT' | 'ADJUST' | 'REFUSE'
@@ -21,7 +24,7 @@ export type DiscountRecommendationDTO = {
   productName: string
   type: RecommendationType
   /** 0–100, not 0–1. */
-  suggestedPercentage: number
+  suggestedPercentage: number | null
   status: RecommendationStatus
   originalPrice: number
   currentPrice: number
@@ -36,6 +39,8 @@ export type DiscountRecommendationDTO = {
   expiresAt: string | null
   /** ISO local datetime; `null` while the recommendation is pending. */
   respondedAt: string | null
+  /** UC10: the recommendation this one follows; `null` for the first of a chain. */
+  previousRecommendationId: number | null
 }
 
 export type RespondToRecommendationRequest = {

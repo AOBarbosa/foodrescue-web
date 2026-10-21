@@ -5,6 +5,7 @@ import { Alert, Box } from '@mui/material'
 
 import { DemandForecastCard } from '@/components/forecast/DemandForecastCard'
 import { DiscountRecommendationCard } from '@/components/recommendation/DiscountRecommendationCard'
+import { RecommendationChainCard } from '@/components/recommendation/RecommendationChainCard'
 import { RegisterSaleForm } from '@/components/sale/RegisterSaleForm'
 import { SaleHistory } from '@/components/sale/SaleHistory'
 import { LinkButton } from '@/components/ui/LinkButton'
@@ -85,6 +86,9 @@ export function ProductDetails({
             </Box>
             <Box sx={{ gridColumn: '1 / -1' }}>
               <DiscountRecommendationCard productId={product.id} />
+            </Box>
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <RecommendationChainCard productId={product.id} />
             </Box>
           </Box>
         )}
