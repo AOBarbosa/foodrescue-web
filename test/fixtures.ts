@@ -1,9 +1,11 @@
 import { AppError, type AppErrorCode } from '@/lib/api/errors'
+import { toIsoDateTime } from '@/lib/format'
 import type { ApiSubError } from '@/types/api'
 import type { DemandForecastDTO } from '@/types/demandForecast'
 import type { DiscountRecommendationDTO } from '@/types/discountRecommendation'
 import type { EstablishmentDTO } from '@/types/establishment'
 import type { WasteAndSavingsIndicatorsDTO } from '@/types/indicators'
+import type { OfferDTO } from '@/types/offer'
 import type { ProductDTO } from '@/types/product'
 import type { SaleDTO } from '@/types/sale'
 import type { WasteRiskDTO } from '@/types/wasteRisk'
@@ -90,6 +92,28 @@ export const discountRecommendation: DiscountRecommendationDTO = {
   expiresAt: '2026-09-27T15:00:00',
   respondedAt: null,
   previousRecommendationId: null,
+}
+
+/**
+ * Backend `LocalDateTime` relative to now. An offer is shown as active or as
+ * past its deadline by comparing `expiresAt` with the clock, so a fixed date
+ * would change meaning as the calendar moves.
+ */
+export function isoDateTimeIn(hours: number): string {
+  return toIsoDateTime(new Date(Date.now() + hours * 60 * 60 * 1000))
+}
+
+export const offer: OfferDTO = {
+  id: 55,
+  productId: product.id,
+  productName: product.name,
+  originalPrice: 9.9,
+  discountedPrice: 6.93,
+  availableQuantity: 12,
+  expiresAt: isoDateTimeIn(6),
+  status: 'ACTIVE',
+  priority: false,
+  createdAt: '2026-09-26T15:00:00',
 }
 
 export const indicators: WasteAndSavingsIndicatorsDTO = {

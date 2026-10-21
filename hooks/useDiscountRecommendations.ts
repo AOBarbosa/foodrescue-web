@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { offerKeys } from '@/hooks/useOffers'
 import { productKeys } from '@/hooks/useProducts'
 import {
   listPendingRecommendations,
@@ -58,7 +59,9 @@ export function useRecommendDiscount(productId: number) {
  * Accepting or adjusting updates the product's current price on the backend,
  * so the cached product (detail and list) is refetched along with the
  * recommendations. Refusing changes no price, but the answered recommendation
- * still leaves the pending list.
+ * still leaves the pending list. Accepting also publishes an offer with the
+ * new price (UC08), replacing the product's previous one, so the offers are
+ * refetched too.
  */
 export function useRespondToRecommendation() {
   const queryClient = useQueryClient()
@@ -78,6 +81,7 @@ export function useRespondToRecommendation() {
         queryKey: productKeys.detail(recommendation.productId),
       })
       void queryClient.invalidateQueries({ queryKey: productKeys.list() })
+      void queryClient.invalidateQueries({ queryKey: offerKeys.list() })
     },
   })
 }

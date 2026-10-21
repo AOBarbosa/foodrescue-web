@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
+import { offerKeys } from '@/hooks/useOffers'
 import { productKeys } from '@/hooks/useProducts'
 import { wasteRiskKeys } from '@/hooks/useWasteRisk'
 import { listSales, registerSale } from '@/lib/api/sales'
@@ -21,7 +22,8 @@ export function useSaleHistory(productId: number, period: SalePeriod) {
 /**
  * Registering a sale deducts the sold quantity from the product's stock, so
  * the cached product (detail and list) and its waste risk are refetched along
- * with the history.
+ * with the history. A sale that empties the stock also closes the product's
+ * offers on the backend (UC08), hence the offers.
  */
 export function useRegisterSale(productId: number) {
   const queryClient = useQueryClient()
@@ -34,6 +36,7 @@ export function useRegisterSale(productId: number) {
       })
       void queryClient.invalidateQueries({ queryKey: productKeys.list() })
       void queryClient.invalidateQueries({ queryKey: wasteRiskKeys.all })
+      void queryClient.invalidateQueries({ queryKey: offerKeys.list() })
     },
   })
 }
