@@ -10,7 +10,7 @@ export default function AvailableOffersPage() {
     <>
       <PageHeader
         title="Ofertas disponíveis"
-        subtitle="Produtos com desconto publicados pelos estabelecimentos. Escolha a quantidade desejada para reservar."
+        subtitle="Produtos com desconto publicados pelos estabelecimentos. As ofertas em destaque vêm primeiro, depois as de prazo mais curto. Escolha a quantidade desejada para reservar."
       />
       <AvailableOfferList />
     </>

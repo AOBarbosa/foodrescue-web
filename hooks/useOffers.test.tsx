@@ -9,6 +9,7 @@ import {
   offerKeys,
   useCloseOffer,
   useCreateOffer,
+  useMarkOfferAsPriority,
   useOffers,
   useProductOffers,
 } from './useOffers'
@@ -78,6 +79,46 @@ describe('useCreateOffer', () => {
       await expect(
         result.current.mutateAsync({ productId: product.id })
       ).rejects.toMatchObject({ status: 422, code: 'BUSINESS_RULE_VIOLATION' })
+    })
+  })
+})
+
+describe('useMarkOfferAsPriority', () => {
+  it('caches the highlighted offer and refreshes the list', async () => {
+    const highlighted = { ...offer, priority: true }
+    vi.mocked(api.markOfferAsPriority).mockResolvedValue(highlighted)
+
+    const { result, queryClient } = renderHookWithProviders(() =>
+      useMarkOfferAsPriority()
+    )
+    queryClient.setQueryData(offerKeys.list(), [offer])
+    await act(() => result.current.mutateAsync(offer.id))
+
+    expect(queryClient.getQueryData(offerKeys.detail(offer.id))).toEqual(
+      highlighted
+    )
+    expect(queryClient.getQueryState(offerKeys.list())?.isInvalidated).toBe(
+      true
+    )
+    expect(api.markOfferAsPriority).toHaveBeenCalledWith(offer.id)
+  })
+
+  it('surfaces the 422 raised when the offer is no longer active', async () => {
+    vi.mocked(api.markOfferAsPriority).mockRejectedValue(
+      apiError(
+        422,
+        'BUSINESS_RULE_VIOLATION',
+        undefined,
+        'offer 55 is not active: current status is CLOSED'
+      )
+    )
+
+    const { result } = renderHookWithProviders(() => useMarkOfferAsPriority())
+    await act(async () => {
+      await expect(result.current.mutateAsync(offer.id)).rejects.toMatchObject({
+        status: 422,
+        code: 'BUSINESS_RULE_VIOLATION',
+      })
     })
   })
 })

@@ -13,13 +13,18 @@ import {
 import { QueryStateView } from '@/components/ui/QueryStateView'
 import { useProductOffers } from '@/hooks/useOffers'
 import { formatCurrency, formatDateTime } from '@/lib/format'
-import { isExpired } from '@/lib/offer/describe'
+import { canBeHighlighted, isExpired } from '@/lib/offer/describe'
 import type { OfferDTO } from '@/types/offer'
 import type { ProductDTO } from '@/types/product'
 
 import { CloseOfferButton } from './CloseOfferButton'
 import { CreateOfferForm } from './CreateOfferForm'
-import { OfferPrice, OfferStatusChip } from './OfferIndicators'
+import { HighlightOfferButton } from './HighlightOfferButton'
+import {
+  OfferPrice,
+  OfferPriorityChip,
+  OfferStatusChip,
+} from './OfferIndicators'
 
 function ActiveOffer({ offer }: { offer: OfferDTO }) {
   const expired = isExpired(offer)
@@ -34,6 +39,7 @@ function ActiveOffer({ offer }: { offer: OfferDTO }) {
         >
           <Typography color="text.secondary">Oferta publicada</Typography>
           <OfferStatusChip offer={offer} />
+          {offer.priority && <OfferPriorityChip />}
         </Stack>
         <OfferPrice offer={offer} />
       </Box>
@@ -53,6 +59,12 @@ function ActiveOffer({ offer }: { offer: OfferDTO }) {
           O prazo desta oferta venceu: os consumidores não conseguem mais pedir.
           Encerre-a para publicar uma nova.
         </Alert>
+      ) : offer.priority ? (
+        <Alert severity="info">
+          Esta oferta está em destaque: aparece antes das outras para os
+          consumidores, com as de prazo mais curto na frente. O destaque dura
+          até a oferta ser encerrada ou vencer.
+        </Alert>
       ) : (
         <Alert severity="info">
           Enquanto esta oferta estiver ativa, o produto não aceita outra.
@@ -61,7 +73,10 @@ function ActiveOffer({ offer }: { offer: OfferDTO }) {
         </Alert>
       )}
 
-      <CloseOfferButton offer={offer} />
+      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+        {canBeHighlighted(offer) && <HighlightOfferButton offer={offer} />}
+        <CloseOfferButton offer={offer} />
+      </Stack>
     </Stack>
   )
 }
@@ -81,6 +96,7 @@ function OfferHistory({ offers }: { offers: OfferDTO[] }) {
             sx={{ alignItems: 'center', flexWrap: 'wrap' }}
           >
             <OfferStatusChip offer={offer} />
+            {offer.priority && <OfferPriorityChip />}
             <Typography variant="body2">
               {formatCurrency(offer.discountedPrice)}
             </Typography>

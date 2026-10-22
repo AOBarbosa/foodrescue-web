@@ -50,6 +50,19 @@ export function isOrderable(offer: OfferDTO, now: Date = new Date()): boolean {
 }
 
 /**
+ * UC11: whether highlighting the offer is worth offering. The backend only
+ * refuses an offer that is not `ACTIVE`, but highlighting one that nobody can
+ * order — already highlighted, past its deadline or sold out — changes
+ * nothing a consumer would see, so the action is not offered for those.
+ */
+export function canBeHighlighted(
+  offer: OfferDTO,
+  now: Date = new Date()
+): boolean {
+  return !offer.priority && isOrderable(offer, now)
+}
+
+/**
  * Discount of the offer over the product's original price, as a percentage
  * (0–100, the scale `formatPercent` expects). `0` when there is no discount
  * to show.

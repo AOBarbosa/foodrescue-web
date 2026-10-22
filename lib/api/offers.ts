@@ -4,9 +4,9 @@ import type { CreateOfferRequest, OfferDTO } from '@/types/offer'
 import { apiClient, unwrap } from './client'
 
 /*
- * UC08. Every route here requires the ESTABLISHMENT role and only reaches the
- * authenticated establishment's own offers (someone else's → 404). The
- * consumer-facing `GET /offers/available` belongs to UC09 and is not here.
+ * UC08 and UC11. Every route here requires the ESTABLISHMENT role and only
+ * reaches the authenticated establishment's own offers (someone else's → 404).
+ * The consumer-facing `GET /offers/available` belongs to UC09 and is not here.
  */
 
 /**
@@ -31,6 +31,19 @@ export async function listOffers(): Promise<OfferDTO[]> {
 
 export async function getOffer(id: number): Promise<OfferDTO> {
   return unwrap(await apiClient.get<ApiResponse<OfferDTO>>(`/offers/${id}`))
+}
+
+/**
+ * UC11: highlights an active offer, which puts it ahead of the others in the
+ * consumer listing (`OfferRankingPolicy`: priority first, then the closest
+ * deadline). Marking is one-way — the backend has no route to undo it — and
+ * marking an offer that is already highlighted succeeds without changing it.
+ * An offer that is not active is a `422 BUSINESS_RULE_VIOLATION`.
+ */
+export async function markOfferAsPriority(id: number): Promise<OfferDTO> {
+  return unwrap(
+    await apiClient.patch<ApiResponse<OfferDTO>>(`/offers/${id}/priority`)
+  )
 }
 
 /**

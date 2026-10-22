@@ -289,6 +289,50 @@ describe('ProductOfferCard', () => {
     ).toBeInTheDocument()
   })
 
+  it('offers the highlight action on an active offer and applies it (UC11)', async () => {
+    vi.mocked(api.listOffers).mockResolvedValue([offer])
+    vi.mocked(api.markOfferAsPriority).mockResolvedValue({
+      ...offer,
+      priority: true,
+    })
+    const user = userEvent.setup()
+    renderWithProviders(<ProductOfferCard product={product} />)
+
+    await user.click(
+      await screen.findByRole('button', { name: /destacar para os clientes/i })
+    )
+    await user.click(screen.getByRole('button', { name: /^destacar oferta$/i }))
+
+    await waitFor(() =>
+      expect(api.markOfferAsPriority).toHaveBeenCalledWith(offer.id)
+    )
+  })
+
+  it('shows an already highlighted offer without offering the action again', async () => {
+    vi.mocked(api.listOffers).mockResolvedValue([{ ...offer, priority: true }])
+    renderWithProviders(<ProductOfferCard product={product} />)
+
+    expect(await screen.findByText('Em destaque')).toBeInTheDocument()
+    expect(
+      screen.getByText(/aparece antes das outras para os consumidores/i)
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /destacar para os clientes/i })
+    ).not.toBeInTheDocument()
+  })
+
+  it('does not offer the highlight for an offer nobody can order', async () => {
+    vi.mocked(api.listOffers).mockResolvedValue([
+      { ...offer, expiresAt: isoDateTimeIn(-2) },
+    ])
+    renderWithProviders(<ProductOfferCard product={product} />)
+
+    expect(await screen.findByText('Prazo vencido')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /destacar para os clientes/i })
+    ).not.toBeInTheDocument()
+  })
+
   it('lists the closed offers of the product as history', async () => {
     vi.mocked(api.listOffers).mockResolvedValue([
       { ...offer, id: 56, status: 'CLOSED', availableQuantity: 0 },

@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { offer } from '@/test/fixtures'
 
 import {
+  canBeHighlighted,
   discountPercentage,
   getOfferDisplayStatus,
   hasNoStockToOffer,
@@ -55,6 +56,24 @@ describe('isOrderable', () => {
     expect(isOrderable(past, NOW)).toBe(false)
     expect(isOrderable({ ...future, status: 'CLOSED' }, NOW)).toBe(false)
     expect(isOrderable({ ...future, availableQuantity: 0 }, NOW)).toBe(false)
+  })
+})
+
+describe('canBeHighlighted', () => {
+  it('is true for an active offer that a consumer could still order', () => {
+    expect(canBeHighlighted(future, NOW)).toBe(true)
+  })
+
+  it('is false for an offer that is already highlighted', () => {
+    expect(canBeHighlighted({ ...future, priority: true }, NOW)).toBe(false)
+  })
+
+  it('is false for an offer no consumer can order', () => {
+    expect(canBeHighlighted(past, NOW)).toBe(false)
+    expect(canBeHighlighted({ ...future, status: 'CLOSED' }, NOW)).toBe(false)
+    expect(canBeHighlighted({ ...future, availableQuantity: 0 }, NOW)).toBe(
+      false
+    )
   })
 })
 
