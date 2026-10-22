@@ -1,7 +1,12 @@
 import { useCallback } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { closeOffer, createOffer, listOffers } from '@/lib/api/offers'
+import {
+  closeOffer,
+  createOffer,
+  listOffers,
+  markOfferAsPriority,
+} from '@/lib/api/offers'
 import type { CreateOfferRequest, OfferDTO } from '@/types/offer'
 
 export const offerKeys = {
@@ -40,6 +45,22 @@ export function useCreateOffer() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (request: CreateOfferRequest) => createOffer(request),
+    onSuccess: (offer) => {
+      queryClient.setQueryData(offerKeys.detail(offer.id), offer)
+      void queryClient.invalidateQueries({ queryKey: offerKeys.list() })
+    },
+  })
+}
+
+/**
+ * UC11: highlighting an offer only changes the offer itself — the consumer
+ * listing is a separate query of a separate session, fetched already ranked by
+ * the backend.
+ */
+export function useMarkOfferAsPriority() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) => markOfferAsPriority(id),
     onSuccess: (offer) => {
       queryClient.setQueryData(offerKeys.detail(offer.id), offer)
       void queryClient.invalidateQueries({ queryKey: offerKeys.list() })

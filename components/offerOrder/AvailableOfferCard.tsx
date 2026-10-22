@@ -106,7 +106,16 @@ export function AvailableOfferCard({
   return (
     <Card
       variant="outlined"
-      sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+      sx={[
+        { height: '100%', display: 'flex', flexDirection: 'column' },
+        // UC11: a highlighted offer leads the listing, so it has to look
+        // different from the ones below it, not just carry a chip.
+        offer.priority &&
+          ((theme) => ({
+            borderColor: theme.palette.warning.main,
+            boxShadow: `inset 0 3px 0 ${theme.palette.warning.main}`,
+          })),
+      ]}
     >
       <CardContent
         sx={{

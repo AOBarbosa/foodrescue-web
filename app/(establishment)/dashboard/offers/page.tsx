@@ -10,7 +10,7 @@ export default function OffersPage() {
     <>
       <PageHeader
         title="Ofertas de excedente"
-        subtitle="O excedente que você publicou para os consumidores, das mais recentes às mais antigas. Cada produto tem no máximo uma oferta ativa; encerre a atual para publicar outra."
+        subtitle="O excedente que você publicou para os consumidores, das mais recentes às mais antigas. Cada produto tem no máximo uma oferta ativa; encerre a atual para publicar outra. Destaque uma oferta para ela aparecer antes das demais na vitrine do consumidor."
       />
       <OfferList />
     </>

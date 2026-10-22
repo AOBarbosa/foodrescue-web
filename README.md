@@ -28,20 +28,21 @@ npm run dev                  # http://localhost:3000
 
 ## O que existe hoje (Sprint 1)
 
-| UC   | Tela                                                          | Rota                                                                         |
-| ---- | ------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| UC01 | Cadastro e login de estabelecimento                           | `/establishment/register`, `/establishment/login`                            |
-| UC01 | Listagem pública de estabelecimentos                          | `/establishments`                                                            |
-| UC01 | Perfil: ver, editar, excluir a própria conta                  | `/dashboard/profile`                                                         |
-| UC02 | Cadastro, listagem e detalhe de produtos                      | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]` |
-| UC03 | Atualização de estoque e validade                             | formulário em `/dashboard/products/[id]`                                     |
-| UC04 | Registro de venda e histórico por período                     | formulário e histórico em `/dashboard/products/[id]`                         |
-| UC05 | Previsão de demanda (estatística ou IA)                       | card em `/dashboard/products/[id]`                                           |
-| UC06 | Risco de desperdício (painel e por produto)                   | `/dashboard/waste-risks`, card em `/dashboard/products/[id]`                 |
-| UC07 | Preço dinâmico: sugerir, aceitar, ajustar ou recusar desconto | `/dashboard/discount-recommendations`, card em `/dashboard/products/[id]`    |
-| UC08 | Oferta de excedente: publicar, acompanhar e encerrar          | `/dashboard/offers`, card em `/dashboard/products/[id]`                      |
-| UC09 | Consumidor: cadastro/login, ofertas ativas e reservas         | `/consumer/register`, `/consumer/login`, `/offers`, `/orders`                |
-| UC12 | Indicadores de desperdício e economia                         | `/dashboard/indicators`                                                      |
+| UC   | Tela                                                          | Rota                                                                          |
+| ---- | ------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| UC01 | Cadastro e login de estabelecimento                           | `/establishment/register`, `/establishment/login`                             |
+| UC01 | Listagem pública de estabelecimentos                          | `/establishments`                                                             |
+| UC01 | Perfil: ver, editar, excluir a própria conta                  | `/dashboard/profile`                                                          |
+| UC02 | Cadastro, listagem e detalhe de produtos                      | `/dashboard/products`, `/dashboard/products/new`, `/dashboard/products/[id]`  |
+| UC03 | Atualização de estoque e validade                             | formulário em `/dashboard/products/[id]`                                      |
+| UC04 | Registro de venda e histórico por período                     | formulário e histórico em `/dashboard/products/[id]`                          |
+| UC05 | Previsão de demanda (estatística ou IA)                       | card em `/dashboard/products/[id]`                                            |
+| UC06 | Risco de desperdício (painel e por produto)                   | `/dashboard/waste-risks`, card em `/dashboard/products/[id]`                  |
+| UC07 | Preço dinâmico: sugerir, aceitar, ajustar ou recusar desconto | `/dashboard/discount-recommendations`, card em `/dashboard/products/[id]`     |
+| UC08 | Oferta de excedente: publicar, acompanhar e encerrar          | `/dashboard/offers`, card em `/dashboard/products/[id]`                       |
+| UC09 | Consumidor: cadastro/login, ofertas ativas e reservas         | `/consumer/register`, `/consumer/login`, `/offers`, `/orders`                 |
+| UC11 | Destacar oferta para os clientes (prioridade na vitrine)      | `/dashboard/offers`, card em `/dashboard/products/[id]`, vitrine em `/offers` |
+| UC12 | Indicadores de desperdício e economia                         | `/dashboard/indicators`                                                       |
 
 As demais UCs só ganham tela quando a API correspondente existir no backend.
 

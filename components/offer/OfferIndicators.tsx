@@ -1,4 +1,5 @@
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import { Chip, Stack, Typography } from '@mui/material'
 
 import { formatCurrency, formatPercent } from '@/lib/format'
@@ -18,6 +19,21 @@ export function OfferStatusChip({ offer }: { offer: OfferDTO }) {
       label={OFFER_STATUS_LABELS[status]}
       color={OFFER_STATUS_COLORS[status]}
       variant={status === 'ACTIVE' ? 'filled' : 'outlined'}
+    />
+  )
+}
+
+/**
+ * UC11: the offer is highlighted for consumers. Same wording and icon as the
+ * chip the consumer sees in `AvailableOfferCard`.
+ */
+export function OfferPriorityChip() {
+  return (
+    <Chip
+      size="small"
+      color="warning"
+      icon={<AutoAwesomeIcon />}
+      label="Em destaque"
     />
   )
 }

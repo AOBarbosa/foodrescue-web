@@ -86,6 +86,43 @@ describe('OfferList', () => {
     await waitFor(() => expect(api.closeOffer).toHaveBeenCalledWith(offer.id))
   })
 
+  it('highlights an offer from the panel (UC11)', async () => {
+    vi.mocked(api.listOffers).mockResolvedValue([offer])
+    vi.mocked(api.markOfferAsPriority).mockResolvedValue({
+      ...offer,
+      priority: true,
+    })
+    const user = userEvent.setup()
+    renderWithProviders(<OfferList />)
+
+    await user.click(
+      await screen.findByRole('button', { name: /destacar para os clientes/i })
+    )
+    await user.click(screen.getByRole('button', { name: /^destacar oferta$/i }))
+
+    await waitFor(() =>
+      expect(api.markOfferAsPriority).toHaveBeenCalledWith(offer.id)
+    )
+  })
+
+  it('marks the already highlighted rows and drops their action', async () => {
+    vi.mocked(api.listOffers).mockResolvedValue([
+      { ...offer, priority: true },
+      { ...offer, id: 57, productName: 'Sonho de creme' },
+    ])
+
+    renderWithProviders(<OfferList />)
+
+    expect(await screen.findByText('Em destaque')).toBeInTheDocument()
+    // Only the offer that is not highlighted yet can be highlighted.
+    expect(
+      screen.getAllByRole('button', { name: /destacar para os clientes/i })
+    ).toHaveLength(1)
+    expect(
+      screen.getAllByRole('button', { name: /encerrar oferta/i })
+    ).toHaveLength(2)
+  })
+
   it('flags an offer that is still active but past its deadline', async () => {
     vi.mocked(api.listOffers).mockResolvedValue([
       { ...offer, expiresAt: isoDateTimeIn(-1) },
